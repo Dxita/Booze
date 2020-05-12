@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "483124896676",
+    "firebase_url": "https://liquorapp-1e8bf.firebaseio.com",
+    "project_id": "liquorapp-1e8bf",
+    "storage_bucket": "liquorapp-1e8bf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:483124896676:android:488808424c8b00443f5731",
+        "android_client_info": {
+          "package_name": "com.sky21.liquor_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "483124896676-k34p217vvj4h9eurcqs4ravolnt1mor9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sky21.liquor_app",
+            "certificate_hash": "43ab1f7925cf350a18a58405283bc64cdcbe3c58"
+          }
+        },
+        {
+          "client_id": "483124896676-0o3bibnfds6p0e8p2c26864008r0er75.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1Oo8ac3EOIAVBLpD9FBX_prQIlxs_0oE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "483124896676-0o3bibnfds6p0e8p2c26864008r0er75.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

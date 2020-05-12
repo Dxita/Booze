@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OTPActivity">
+
+    <LinearLayout
+        android:id="@+id/topview"
+        android:orientation="horizontal"
+        android:padding="20dp"
+        android:background="@color/golden"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_gravity="right"
+            android:layout_width="80dp"
+            android:layout_height="90dp"
+            android:tint="@color/black"
+            android:src="@drawable/ic_chat_black_24dp"/>
+
+        <LinearLayout
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:fontFamily="@font/calibri"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="verify details"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:textAllCaps="true"
+                android:textColor="@color/black"/>
+
+
+            <TextView
+                android:fontFamily="@font/calibri"
+                android:gravity="center"
+                android:text="We have sent you 6 digit OTP to your registered mobile number"
+                android:textColor="@color/colorAccent"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lay"
+        android:layout_marginTop="40sp"
+        android:layout_marginRight="14sp"
+        android:layout_marginLeft="14sp"
+        android:layout_below="@+id/topview"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    <EditText
+
+        android:fontFamily="@font/calibri"
+        android:singleLine="true"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:id="@+id/editTextCode"
+        android:background="@drawable/stroke"
+        android:hint="OTP here"
+        android:textSize="14dp"
+        android:padding="14sp"
+        android:paddingRight="12sp"
+        android:paddingLeft="12sp"
+        android:textColor="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></EditText>
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressbar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_below="@+id/lay"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-214dp"
+        android:visibility="gone"/>
+    <Button
+        android:layout_alignParentBottom="true"
+        android:id="@+id/buttonSignIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="submit"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:background="@color/golden"
+
+        />
+</RelativeLayout>
