@@ -137,6 +137,7 @@ progressBar.setVisibility(View.VISIBLE);
                             params.put("name",object.getString("name"));
                             params.put("lat",object.getString("lat"));
                             params.put("long",object.getString("long"));
+                            params.put("address",object.getString("address"));
 
                             storeList.add(params);
 
@@ -249,10 +250,12 @@ progressBar.setVisibility(View.VISIBLE);
             final HashMap<String,String> map=storelist.get(position);
 
             holder.store_name.setText(map.get("name"));
+            holder.address.setText(map.get("address"));
             holder.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent=new Intent(getApplicationContext(),ProductsActivity.class);
+                    intent.putExtra("ID",map.get("id"));
                     startActivity(intent);
                 }
             });
@@ -267,13 +270,14 @@ progressBar.setVisibility(View.VISIBLE);
     }
 
     private class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView store_name;
+        TextView store_name,address;
         LinearLayout layout;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             store_name=itemView.findViewById(R.id.store_name);
             layout=itemView.findViewById(R.id.layout);
+            address=itemView.findViewById(R.id.typeTxt);
         }
     }
 }

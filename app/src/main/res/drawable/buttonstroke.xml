@@ -11,13 +11,13 @@
 
     <stroke
 
-        android:color="@color/colorPrimaryDark"
+        android:color="@color/colorAccent"
         android:width="1dp">
 
     </stroke>
 
     <solid
-        android:color="#e2f5fc">
+        android:color="#FFFFFF">
 
     </solid>
 </shape>

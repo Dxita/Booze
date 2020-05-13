@@ -78,30 +78,7 @@
             android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></EditText>
-        <TextView
-            android:text="Email"
-            android:textSize="16dp"
-            android:padding="10sp"
-            android:fontFamily="@font/calibri"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></TextView>
 
-        <EditText
-            android:id="@+id/email"
-            android:singleLine="true"
-            android:background="@drawable/stroke"
-            android:hint="Enter your email here"
-            android:inputType="textEmailAddress"
-android:fontFamily="@font/calibri"
-            android:padding="10sp"
-            android:textSize="14dp"
-            android:paddingRight="12sp"
-            android:paddingLeft="12sp"
-            android:textColor="@color/black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"></EditText>
 
         <TextView
 
@@ -112,6 +89,7 @@ android:fontFamily="@font/calibri"
             android:padding="10sp"
             android:fontFamily="@font/calibri"            android:layout_width="match_parent"
             android:layout_height="wrap_content"></TextView>
+
 
         <EditText
             android:singleLine="true"
@@ -127,6 +105,7 @@ android:fontFamily="@font/calibri"
             android:textSize="14dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></EditText>
+
 
         <TextView
 

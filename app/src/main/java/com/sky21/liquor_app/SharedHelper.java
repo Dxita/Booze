@@ -1,5 +1,6 @@
 package com.sky21.liquor_app;
 
+
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -20,5 +21,16 @@ public class SharedHelper {
         sharedPreferences = contextGetKey.getSharedPreferences("Cache", Context.MODE_PRIVATE);
         String Value = sharedPreferences.getString(Key, "");
         return Value;
+
     }
+
+
+    /*public static void clearSharedPreferences(Context context)
+    {
+        sharedPreferences = context.getSharedPreferences("Cache", Context.MODE_PRIVATE);
+        sharedPreferences.edit().clear().commit();
+
+    }
+*/
+
 }

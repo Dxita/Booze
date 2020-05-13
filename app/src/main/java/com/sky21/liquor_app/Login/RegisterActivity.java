@@ -22,9 +22,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
+import com.sky21.liquor_app.CountryData;
 import com.sky21.liquor_app.Home.MainActivity;
 import com.sky21.liquor_app.OTPActivity;
 import com.sky21.liquor_app.R;
+import com.sky21.liquor_app.SharedHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,8 +38,8 @@ public class RegisterActivity extends AppCompatActivity {
     ImageView backspace;
     Button signup;
     ProgressBar progressBar;
-    EditText name, mobile, password, email;
-
+    EditText name, mobile, password;
+    String code;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,10 +53,9 @@ public class RegisterActivity extends AppCompatActivity {
         password = findViewById(R.id.password);
         progressBar = findViewById(R.id.progressbar);
         signup = findViewById(R.id.signup);
-        email = findViewById(R.id.email);
         backspace = findViewById(R.id.backspace);
 
-
+         code = "91";
         backspace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,14 +71,11 @@ public class RegisterActivity extends AppCompatActivity {
                 String e = mobile.getText().toString();
                 String p = password.getText().toString();
                 String n = name.getText().toString();
-                String em = email.getText().toString();
 
                 if (n.isEmpty()) {
                     name.requestFocus();
                     name.setError("Enter your Full name");
-                } else if (em.isEmpty()) {
-                    email.requestFocus();
-                    email.setError("Enter your email id");
+
                 } else if (e.isEmpty()) {
                     mobile.requestFocus();
                     mobile.setError("Enter your mobile number");
@@ -106,8 +104,12 @@ public class RegisterActivity extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     if (jsonObject.getString("success").equalsIgnoreCase("true")) {
-                        Intent signup = new Intent(getApplicationContext(), LoginActivity.class);
-                        signup.putExtra("PHONE",mobile.getText().toString());
+                        String phonenumber = "+" + code + mobile.getText().toString();
+                        SharedHelper.putKey(RegisterActivity.this,"number",phonenumber);
+
+                        Intent signup = new Intent(getApplicationContext(), OTPActivity.class);
+
+                        signup.putExtra("PHONE",phonenumber);
                         startActivity(signup);
                         Toast.makeText(RegisterActivity.this, "Thanks for signing up!", Toast.LENGTH_SHORT).show();
                     } else {
@@ -129,7 +131,6 @@ public class RegisterActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = new HashMap<>();
                 map.put("name", name.getText().toString());
-                map.put("email", email.getText().toString());
                 map.put("mobile_no", mobile.getText().toString());
                 map.put("password", password.getText().toString());
                 return map;

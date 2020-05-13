@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:background="@color/sky"
+    android:background="@color/white"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -51,9 +51,9 @@
 
     <ImageView
         android:layout_marginTop="20dp"
-        android:src="@mipmap/bg"
+        android:src="@drawable/newlogo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ImageView>
+        android:layout_height="150sp"></ImageView>
 
 
 
@@ -65,7 +65,7 @@
         android:layout_gravity="center"
         android:fontFamily="@font/calibri"
         android:layout_marginTop="25dp"
-        android:background="@drawable/buttonbg"
+        android:background="@drawable/buttonbgs"
         android:layout_width="match_parent"
         android:paddingLeft="22dp"
         android:paddingRight="22dp"

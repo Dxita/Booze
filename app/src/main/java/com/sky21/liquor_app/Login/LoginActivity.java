@@ -103,8 +103,9 @@ public class LoginActivity extends AppCompatActivity {
                     JSONObject jsonObject=new JSONObject(response);
                     if (jsonObject.getString("success").equalsIgnoreCase("true"))
                     {
-
+                      //  SharedHelper.putKey(LoginActivity.this,"loggedin","true");
                         JSONObject object=jsonObject.getJSONObject("data");
+
 
                         String token;
                         token=object.getString("token");
@@ -115,6 +116,8 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(signup);
                         Toast.makeText(LoginActivity.this, "Welcome back!", Toast.LENGTH_SHORT).show();
 
+                        String phonenumber=phone.getText().toString();
+                        SharedHelper.putKey(LoginActivity.this,"number",phonenumber);
                         SharedHelper.putKey(LoginActivity.this,"token",token);
 
                     }
@@ -129,7 +132,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
+             public void onErrorResponse(VolleyError error) {
 
             }
         })
