@@ -113,8 +113,9 @@ public class EditProfileActivity extends AppCompatActivity {
                     if (jsonObject.getString("success").equalsIgnoreCase("true"))
                     {
                         Toast.makeText(EditProfileActivity.this, "Profile updated successfully!", Toast.LENGTH_SHORT).show();
-                        Intent intent=new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);
+
+                        /*Intent intent=new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);*/
                     }
                     else
                     {

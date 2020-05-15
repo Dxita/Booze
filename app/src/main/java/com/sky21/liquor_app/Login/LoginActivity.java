@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
                     JSONObject jsonObject=new JSONObject(response);
                     if (jsonObject.getString("success").equalsIgnoreCase("true"))
                     {
-                      //  SharedHelper.putKey(LoginActivity.this,"loggedin","true");
+                      SharedHelper.putKey(LoginActivity.this,"loggedin","true");
                         JSONObject object=jsonObject.getJSONObject("data");
 
 

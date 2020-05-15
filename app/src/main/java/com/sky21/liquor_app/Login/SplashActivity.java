@@ -34,8 +34,8 @@ public class SplashActivity extends AppCompatActivity implements Runnable {
 
         Intent intent1 = new Intent(SplashActivity.this, WelcomeActivity.class);
         startActivity(intent1);
-        finish();
-        /*if(SharedHelper.getKey(getApplicationContext(),"loggedin").equals("true")){
+
+     /*   if(SharedHelper.getKey(getApplicationContext(),"loggedin").equals("true")){
             Intent intent=new Intent(SplashActivity.this, MainActivity.class);
             startActivity(intent);
             finish();

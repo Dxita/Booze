@@ -19,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.sky21.liquor_app.Login.LoginActivity;
 import com.sky21.liquor_app.Login.WelcomeActivity;
 import com.sky21.liquor_app.R;
 import com.sky21.liquor_app.SharedHelper;
@@ -90,6 +91,9 @@ token=SharedHelper.getKey(ProfileActivity.this,"token");
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     if (jsonObject.getString("success").equalsIgnoreCase("true")) {
+
+                        SharedHelper.putKey(ProfileActivity.this,"loggedin","false");
+
                         Toast.makeText(ProfileActivity.this, "Logout successfully!", Toast.LENGTH_SHORT).show();
                         SharedPreferences preferences = getSharedPreferences("loginPrefs", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();

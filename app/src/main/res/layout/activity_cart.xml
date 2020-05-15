@@ -1,10 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-   xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CartActivity">
+    tools:context=".Home.ProductsActivity">
 
+    <LinearLayout
+        android:id="@+id/topview"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:background="@color/white"
+        android:layout_height="50dp">
+
+        <TextView
+            android:layout_marginLeft="12sp"
+
+            android:textAllCaps="true"
+            android:fontFamily="@font/calibri"
+            android:layout_weight="1"
+            android:id="@+id/addressId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:drawableLeft="@drawable/ic_keyboard_backspace_black_24dp"
+            android:drawablePadding="10dp"
+            android:textColor="@color/black"
+            android:textSize="15dp"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:layout_marginRight="12dp"
+            android:text="Cart"/>
+
+
+
+
+
+
+    </LinearLayout>
+
+
+
+    <TextView
+        android:layout_below="@+id/topview"
+        android:layout_marginTop="05sp"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:id="@+id/delete_all"
+        android:fontFamily="@font/calibri"
+        android:padding="10sp"
+        android:gravity="right"
+        android:text="Delete all"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></TextView>
+
+    <ProgressBar
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:id="@+id/progressbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ProgressBar>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_below="@+id/delete_all"
+
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/layout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <LinearLayout
+android:visibility="gone"
+        android:layout_marginLeft="10sp"
+        android:layout_marginRight="10sp"
+        android:layout_below="@+id/recyclerview"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_marginTop="20sp"
+
+        android:layout_height="wrap_content">
+
+    <TextView
+
+        android:textColor="@color/black"
+        android:fontFamily="@font/calibri"
+        android:padding="10sp"
+        android:textSize="20sp"
+       android:text="Bill Details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></TextView>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <TextView
+            android:layout_weight="1"
+            android:fontFamily="@font/calibri"
+            android:padding="10sp"
+            android:text="Item total"
+            android:layout_width="0sp"
+            android:layout_height="wrap_content"></TextView>
+
+            <TextView
+                android:id="@+id/item_total"
+                android:fontFamily="@font/calibri"
+                android:padding="10sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
+
+        </LinearLayout>
+
+        <View
+            android:background="@color/colorAccent"
+            android:layout_width="match_parent"
+            android:layout_height="0.6sp"></View>
+
+        <TextView
+            android:gravity="right"
+            android:id="@+id/total"
+            android:fontFamily="@font/calibri"
+            android:padding="10sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></TextView>
+    </LinearLayout>
+    </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    <Button
+        android:background="@color/golden"
+        android:textColor="@color/white"
+        android:text="Place order"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></Button>
 </RelativeLayout>

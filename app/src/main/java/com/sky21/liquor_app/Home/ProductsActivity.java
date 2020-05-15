@@ -141,7 +141,7 @@ public class ProductsActivity extends AppCompatActivity {
                             JSONObject object=jsonArray.getJSONObject(j);
                             HashMap<String,String> params=new HashMap<>();
                             params.put("id",object.getString("id"));
-                            params.put("store_id",object.getString("store_id"));
+                            params.put("state_id",object.getString("state_id"));
                             params.put("name",object.getString("name"));
                             params.put("price",object.getString("price"));
                             params.put("image",object.getString("image"));
