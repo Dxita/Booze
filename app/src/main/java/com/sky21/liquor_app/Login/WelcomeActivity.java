@@ -10,7 +10,9 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.sky21.liquor_app.Home.MainActivity;
 import com.sky21.liquor_app.R;
+import com.sky21.liquor_app.SharedHelper;
 
 public class WelcomeActivity extends AppCompatActivity {
     Button signin,signup;
@@ -50,6 +52,21 @@ public class WelcomeActivity extends AppCompatActivity {
                 startActivity(signup);
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (SharedHelper.getKey(WelcomeActivity.this,"loggedin").equals("true")){
+            Bundle bundle = new Bundle();
+            Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+            if (bundle != null){
+                intent.putExtras(bundle);
+            }
+            startActivity(intent);
+        } else {
+            return;
+        }
     }
 
     public void onBackPressed() {
