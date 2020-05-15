@@ -142,6 +142,7 @@ android:visibility="gone"
     </LinearLayout>
     </androidx.core.widget.NestedScrollView>
     <Button
+        android:id="@+id/place_order"
         android:background="@color/golden"
         android:textColor="@color/white"
         android:text="Place order"
