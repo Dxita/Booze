@@ -181,4 +181,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"></Button>
     </LinearLayout>
+    <ProgressBar
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        android:id="@+id/progressbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></ProgressBar>
 </RelativeLayout>

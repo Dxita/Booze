@@ -1,12 +1,5 @@
 package com.sky21.liquor_app.Home;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +17,13 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -51,11 +51,11 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     TextView addressTxt;
-    ImageView profileIcon,searchView;
+    ImageView profileIcon, searchView;
     GPSTracker gps;
     double latitude;
     double longitude;
-ImageView profile,search;
+    ImageView profile, search;
     Handler handlers;
     RecyclerView recyclerView;
     ProgressBar progressBar;
@@ -64,24 +64,21 @@ ImageView profile,search;
     String token;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
-        addressTxt=findViewById(R.id.addressId);
-        profile=findViewById(R.id.myprofileId);
-        search=findViewById(R.id.searchView);
-       recyclerView=findViewById(R.id.recyclerview);
-       progressBar=findViewById(R.id.progressbar);
+        addressTxt = findViewById(R.id.addressId);
+        profile = findViewById(R.id.myprofileId);
+        search = findViewById(R.id.searchView);
+        recyclerView = findViewById(R.id.recyclerview);
+        progressBar = findViewById(R.id.progressbar);
 
-        final Intent intent=getIntent();
-        token=intent.getStringExtra("TOKEN");
-
+        token = SharedHelper.getKey(this,"token");
 
         gpsmethod();
-        handlers=new Handler();
+        handlers = new Handler();
         handlers.postDelayed(new Runnable() {
             public void run() {
                 gpsmethod();          // this method will contain your almost-finished HTTP calls
@@ -92,7 +89,7 @@ ImageView profile,search;
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(), ProfileActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
                 startActivity(intent);
             }
         });
@@ -100,7 +97,7 @@ ImageView profile,search;
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(), SearchActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
                 startActivity(intent);
             }
         });
@@ -110,45 +107,40 @@ ImageView profile,search;
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
-       api();
+        api();
 
     }
 
     private void api() {
-progressBar.setVisibility(View.VISIBLE);
-        RequestQueue requestQueue= Volley.newRequestQueue(this);
-        String url="https://missionlockdown.com/BoozeApp/api/stores";
-        StringRequest stringRequest=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        progressBar.setVisibility(View.VISIBLE);
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        String url = "https://missionlockdown.com/BoozeApp/api/stores";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
                 try {
-                    JSONObject jsonObject=new JSONObject(response);
+                    JSONObject jsonObject = new JSONObject(response);
 
-                    Log.d("response",response);
-                    if (jsonObject.getString("success").equalsIgnoreCase("true"))
-                    {
-                        JSONArray jsonArray=jsonObject.getJSONArray("stores");
-                        for(int j=0; j<jsonArray.length(); j++)
-                        {
-                            JSONObject object=jsonArray.getJSONObject(j);
-                            HashMap<String,String> params=new HashMap<>();
-                            params.put("id",object.getString("id"));
-                            params.put("name",object.getString("name"));
-                            params.put("lat",object.getString("lat"));
-                            params.put("long",object.getString("long"));
-                            params.put("address",object.getString("address"));
+                    Log.d("response", response);
+                    if (jsonObject.getString("success").equalsIgnoreCase("true")) {
+                        JSONArray jsonArray = jsonObject.getJSONArray("stores");
+                        for (int j = 0; j < jsonArray.length(); j++) {
+                            JSONObject object = jsonArray.getJSONObject(j);
+                            HashMap<String, String> params = new HashMap<>();
+                            params.put("id", object.getString("id"));
+                            params.put("name", object.getString("name"));
+                            params.put("lat", object.getString("lat"));
+                            params.put("long", object.getString("long"));
+                            params.put("address", object.getString("address"));
 
                             storeList.add(params);
 
                         }
-                        
-                        Mainadapter mainadapter=new Mainadapter(getApplicationContext(),storeList);
-                        recyclerView.setAdapter(mainadapter);
-                    }
 
-                    else
-                    {
+                        Mainadapter mainadapter = new Mainadapter(getApplicationContext(), storeList);
+                        recyclerView.setAdapter(mainadapter);
+                    } else {
                         Toast.makeText(MainActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
@@ -161,7 +153,7 @@ progressBar.setVisibility(View.VISIBLE);
             public void onErrorResponse(VolleyError error) {
 
             }
-        }){
+        }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> headers = new HashMap<>();
@@ -181,21 +173,21 @@ progressBar.setVisibility(View.VISIBLE);
     }
 
     private void gpsmethod() {
-        if(ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             return;
-        }else{
+        } else {
 
             gps = new GPSTracker(MainActivity.this);
             // Check if GPS enabled
-            if(gps.canGetLocation()) {
+            if (gps.canGetLocation()) {
                 latitude = gps.getLatitude();
                 longitude = gps.getLongitude();
-                String lat1= String.valueOf(latitude);
-                String lon1= String.valueOf(longitude);
+                String lat1 = String.valueOf(latitude);
+                String lon1 = String.valueOf(longitude);
 
-                SharedHelper.putKey(MainActivity.this,"lat", String.valueOf(latitude));
-                SharedHelper.putKey(MainActivity.this,"lon", String.valueOf(longitude));
+                SharedHelper.putKey(MainActivity.this, "lat", String.valueOf(latitude));
+                SharedHelper.putKey(MainActivity.this, "lon", String.valueOf(longitude));
                 //    Toast.makeText(MainActivity.this, ""+latitude+" "+longitude, Toast.LENGTH_SHORT).show();
                 Geocoder geocoder;
                 List<Address> addresses = null;
@@ -214,8 +206,8 @@ progressBar.setVisibility(View.VISIBLE);
                     String postalCode = addresses.get(0).getPostalCode();
                     String knownName = addresses.get(0).getFeatureName();
                     addressTxt.setText(address);
-                    SharedHelper.putKey(MainActivity.this,"location",address);
-                    Log.d("add",address);
+                    SharedHelper.putKey(MainActivity.this, "location", address);
+                    Log.d("add", address);
                 }
 
             } else {
@@ -228,34 +220,35 @@ progressBar.setVisibility(View.VISIBLE);
         }
     }
 
-    private class Mainadapter extends RecyclerView.Adapter <MyViewHolder>{
+    private class Mainadapter extends RecyclerView.Adapter<MyViewHolder> {
 
         Context context;
         ArrayList<HashMap<String, String>> storelist = new ArrayList<>();
 
         public Mainadapter(Context context, ArrayList<HashMap<String, String>> storeList) {
-            this.context=context;
-            this.storelist=storeList ;
+            this.context = context;
+            this.storelist = storeList;
         }
 
 
         @NonNull
         @Override
         public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view= LayoutInflater.from(context).inflate(R.layout.store_recycler,null);
-            return new MyViewHolder(view);        }
+            View view = LayoutInflater.from(context).inflate(R.layout.store_recycler, null);
+            return new MyViewHolder(view);
+        }
 
         @Override
         public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-            final HashMap<String,String> map=storelist.get(position);
+            final HashMap<String, String> map = storelist.get(position);
 
             holder.store_name.setText(map.get("name"));
             holder.address.setText(map.get("address"));
             holder.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent=new Intent(getApplicationContext(),ProductsActivity.class);
-                    intent.putExtra("ID",map.get("id"));
+                    Intent intent = new Intent(getApplicationContext(), ProductsActivity.class);
+                    intent.putExtra("ID", map.get("id"));
                     startActivity(intent);
                 }
             });
@@ -270,14 +263,15 @@ progressBar.setVisibility(View.VISIBLE);
     }
 
     private class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView store_name,address;
+        TextView store_name, address;
         LinearLayout layout;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            store_name=itemView.findViewById(R.id.store_name);
-            layout=itemView.findViewById(R.id.layout);
-            address=itemView.findViewById(R.id.typeTxt);
+            store_name = itemView.findViewById(R.id.store_name);
+            layout = itemView.findViewById(R.id.layout);
+            address = itemView.findViewById(R.id.typeTxt);
         }
     }
 }
