@@ -7,11 +7,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -40,6 +42,10 @@ public class CartActivity extends AppCompatActivity {
     ProgressBar progressBar;
     LinearLayoutManager layoutManager;
     ArrayList<HashMap<String, String>> storeList = new ArrayList<>();
+    Button place_order;
+    String cart_total;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +63,7 @@ public class CartActivity extends AppCompatActivity {
             }
         });
 
-
+place_order=findViewById(R.id.place_order);
         layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -65,9 +71,24 @@ public class CartActivity extends AppCompatActivity {
 
         getCartdata();
 
+
+
+        place_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent=new Intent(getApplicationContext(),OrderplacedActivity.class);
+                intent.putExtra("TOTAL",cart_total);
+                startActivity(intent);
+            }
+        });
+
     }
 
+
+
     private void getCartdata() {
+        progressBar.setVisibility(View.VISIBLE);
         RequestQueue requestQueue= Volley.newRequestQueue(this);
         String url="https://missionlockdown.com/BoozeApp/api/cart";
         StringRequest stringRequest=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -80,6 +101,7 @@ public class CartActivity extends AppCompatActivity {
                     if (jsonObject.getString("success").equalsIgnoreCase("true"))
                     {
 
+                        cart_total=jsonObject.getString("total");
                         JSONArray jsonArray=jsonObject.getJSONArray("data");
                         for(int j=0; j<jsonArray.length(); j++)
                         {
@@ -110,6 +132,7 @@ public class CartActivity extends AppCompatActivity {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                progressBar.setVisibility(View.GONE);
 
 
             }
