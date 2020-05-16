@@ -3,11 +3,13 @@ package com.sky21.liquor_app.Home;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +29,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.sky21.liquor_app.R;
 import com.sky21.liquor_app.SharedHelper;
+import com.sky21.liquor_app.models.FilterModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +37,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FilterActivity extends AppCompatActivity {
@@ -41,8 +45,8 @@ public class FilterActivity extends AppCompatActivity {
     TextView category_tv, brand_tv, price_tv;
     RecyclerView recycler_view;
     FilterAdapter adapter;
-    ArrayList<HashMap<String, String>> categorylist;
-    ArrayList<HashMap<String, String>> brandlist;
+    List<FilterModel> categorylist;
+    List<FilterModel> brandlist;
 
     String token = "";
     ProgressBar progressBar;
@@ -64,7 +68,6 @@ public class FilterActivity extends AppCompatActivity {
 
         progressBar = findViewById(R.id.progressbar);
         recycler_view = findViewById(R.id.category_rv);
-
 
 
         backspace = findViewById(R.id.addressId);
@@ -112,6 +115,7 @@ public class FilterActivity extends AppCompatActivity {
                 setCategoryRecyclerView();
             }
         });*/
+
     }
 
     @Override
@@ -120,11 +124,12 @@ public class FilterActivity extends AppCompatActivity {
         categoryApiCall();
     }
 
-    private void setCategoryRecyclerView(ArrayList<HashMap<String, String>> list) {
+    private void setCategoryRecyclerView(List<FilterModel> list) {
         recycler_view.setHasFixedSize(true);
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
         adapter = new FilterAdapter(this, list);
         recycler_view.setAdapter(adapter);
+        recycler_view.getPreserveFocusAfterLayout();
     }
 
     private void categoryApiCall() {
@@ -151,7 +156,8 @@ public class FilterActivity extends AppCompatActivity {
                             params.put("created_at", object.getString("created_at"));
                             params.put("updated_at", object.getString("updated_at"));
 
-                            categorylist.add(params);
+                            categorylist.add(new FilterModel(params.get("category")));
+
                         }
                         setCategoryRecyclerView(categorylist);
                     } else {
@@ -213,7 +219,7 @@ public class FilterActivity extends AppCompatActivity {
                             params.put("created_at", object.getString("created_at"));
                             params.put("updated_at", object.getString("updated_at"));
 
-                            brandlist.add(params);
+                            brandlist.add(new FilterModel(params.get("brand")));
                         }
                         setCategoryRecyclerView(brandlist);
                     } else {
@@ -251,12 +257,14 @@ public class FilterActivity extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
-    public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder> {
+    public static class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder> {
 
         Context context;
-        ArrayList<HashMap<String, String>> list;
+        //ArrayList<HashMap<String, String>> list;
+        List<FilterModel> list;
+        List<FilterModel> checkedlist = new ArrayList<>();
 
-        public FilterAdapter(Context context, ArrayList<HashMap<String, String>> list) {
+        public FilterAdapter(Context context, List<FilterModel> list) {
             this.context = context;
             this.list = list;
         }
@@ -269,12 +277,29 @@ public class FilterActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            HashMap<String, String> item = list.get(position);
-            if (item.containsKey("category") == item.containsKey("category")){
-                holder.checkbox.setText(item.get("category"));
-            } else if (item.containsKey("brand") == item.containsKey("brand")){
-                holder.checkbox.setText(item.get("brand"));
+        public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+            final FilterModel item = list.get(position);
+            if (item != null){
+                //holder.checkbox.setOnCheckedChangeListener(null);
+                holder.checkbox.setText(item.getItem_name());
+                if (item.isSelected()){
+                    holder.checkbox.setChecked(true);
+                } else {
+                    holder.checkbox.setChecked(false);
+                    holder.setItemClickListener(new ViewHolder.ItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            CheckBox checkBox = (CheckBox)view;
+                            if (checkBox.isChecked()){
+                                checkedlist.add(list.get(position));
+                                item.setSelected(true);
+                            } else if (!checkBox.isChecked()){
+                                checkedlist.remove(list.get(position));
+                                item.setSelected(false);
+                            }
+                        }
+                    });
+                }
             }
         }
 
@@ -283,12 +308,28 @@ public class FilterActivity extends AppCompatActivity {
             return list.size();
         }
 
-        public class ViewHolder extends RecyclerView.ViewHolder {
+        public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             CheckBox checkbox;
+
+            ItemClickListener listener;
 
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
+                this.setIsRecyclable(false);
                 checkbox = itemView.findViewById(R.id.checkbox);
+            }
+
+            public void setItemClickListener(ItemClickListener listener){
+                this.listener = listener;
+            }
+
+            @Override
+            public void onClick(View v) {
+                this.listener.onItemClick(v,getLayoutPosition());
+            }
+
+            public interface ItemClickListener{
+                void onItemClick(View view,int position);
             }
         }
     }
