@@ -2,6 +2,7 @@ package com.sky21.liquor_app.UserAccount;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -40,6 +41,7 @@ public class EditProfileActivity extends AppCompatActivity {
     String token;
     ProgressBar progressBar;
     Button button;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,8 +116,8 @@ public class EditProfileActivity extends AppCompatActivity {
                     {
                         Toast.makeText(EditProfileActivity.this, "Profile updated successfully!", Toast.LENGTH_SHORT).show();
 
-                        /*Intent intent=new Intent(getApplicationContext(), MainActivity.class);
-                        startActivity(intent);*/
+                        Intent intent=new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
                     }
                     else
                     {
@@ -150,6 +152,7 @@ public class EditProfileActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String>map=new HashMap<>();
                 map.put("name",name.getText().toString());
+
                 return map;
             }
         };

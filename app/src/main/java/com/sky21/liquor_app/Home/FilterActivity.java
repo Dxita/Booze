@@ -1,6 +1,7 @@
 package com.sky21.liquor_app.Home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,8 +29,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.sky21.liquor_app.CartActivity;
 import com.sky21.liquor_app.R;
 import com.sky21.liquor_app.SharedHelper;
+import com.sky21.liquor_app.UserAccount.ProfileActivity;
 import com.sky21.liquor_app.models.FilterModel;
 
 import org.json.JSONArray;
@@ -44,6 +48,8 @@ public class FilterActivity extends AppCompatActivity {
     TextView backspace, unselect_all_tv;
     TextView category_tv, brand_tv, price_tv;
     RecyclerView recycler_view;
+    ImageView profile, search,cart;
+
     FilterAdapter adapter;
     List<FilterModel> categorylist;
     List<FilterModel> brandlist;
@@ -61,6 +67,9 @@ public class FilterActivity extends AppCompatActivity {
         brand_tv = findViewById(R.id.brand_tv);
         price_tv = findViewById(R.id.price_tv);
         // unselect_all_tv=findViewById(R.id.unselect_all_tv);
+        profile = findViewById(R.id.myprofileId);
+        search = findViewById(R.id.searchView);
+        cart = findViewById(R.id.cart);
 
         category_tv.setBackgroundColor(Color.WHITE);
         brand_tv.setBackgroundColor(Color.GRAY);
@@ -80,6 +89,28 @@ public class FilterActivity extends AppCompatActivity {
 
         token = SharedHelper.getKey(FilterActivity.this, "token");
 
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+        cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CartActivity .class);
+                startActivity(intent);
+            }
+        });
         category_tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

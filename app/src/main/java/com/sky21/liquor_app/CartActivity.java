@@ -14,10 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -37,13 +40,14 @@ import java.util.Map;
 public class CartActivity extends AppCompatActivity {
 
     String token;
-    TextView addressTxt;
+    TextView addressTxt,delete_all;
     RecyclerView recyclerView;
     ProgressBar progressBar;
     LinearLayoutManager layoutManager;
     ArrayList<HashMap<String, String>> storeList = new ArrayList<>();
     Button place_order;
     String cart_total;
+    ImageView empty_cart;
 
 
     @Override
@@ -53,7 +57,7 @@ public class CartActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         token= SharedHelper.getKey(CartActivity.this,"token");
         addressTxt=findViewById(R.id.addressId);
-
+        delete_all=findViewById(R.id.delete_all);
         recyclerView=findViewById(R.id.recyclerview);
         progressBar=findViewById(R.id.progressbar);
         addressTxt.setOnClickListener(new View.OnClickListener() {
@@ -62,13 +66,19 @@ public class CartActivity extends AppCompatActivity {
                 finish();
             }
         });
+        empty_cart=findViewById(R.id.empty_cart);
 
 place_order=findViewById(R.id.place_order);
         layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-
+        delete_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                delete();
+            }
+        });
         getCartdata();
 
 
@@ -85,6 +95,60 @@ place_order=findViewById(R.id.place_order);
 
     }
 
+    private void delete() {
+
+        progressBar.setVisibility(View.VISIBLE);
+        String url ="https://missionlockdown.com/BoozeApp/api/empty-cart";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject json = new JSONObject(response);
+
+                    if (json.getString("success").equalsIgnoreCase("true"))
+                    {
+                        Toast.makeText(CartActivity.this, ""+ "Successfully removed all the items from the cart!", Toast.LENGTH_SHORT).show();
+                        recyclerView.setVisibility(View.GONE);
+                        place_order.setVisibility(View.GONE);
+                        delete_all.setVisibility(View.GONE);
+                        empty_cart.setVisibility(View.VISIBLE);
+                    }
+                    else
+                    {
+                        Toast.makeText(CartActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                progressBar.setVisibility(View.GONE);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(CartActivity.this, "no internet access", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                // Basic Authentication
+                //String auth = "Basic " + Base64.encodeToString(CONSUMER_KEY_AND_SECRET.getBytes(), Base64.NO_WRAP);
+
+                headers.put("Authorization", "Bearer " + token);
+                return headers;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(CartActivity.this);
+        requestQueue.add(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                100000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
 
 
     private void getCartdata() {
@@ -128,6 +192,15 @@ place_order=findViewById(R.id.place_order);
 
                         CartAdapter cartadapter=new CartAdapter(getApplicationContext(),storeList);
                         recyclerView.setAdapter(cartadapter);
+                    }
+
+                    else
+                    {
+                        delete_all.setVisibility(View.GONE)                      ;
+                        recyclerView.setVisibility(View.GONE);
+                        empty_cart.setVisibility(View.VISIBLE);
+                        place_order.setVisibility(View.GONE);
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -174,13 +247,23 @@ place_order=findViewById(R.id.place_order);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull CartHolder holder, int position) {
+        public void onBindViewHolder(@NonNull CartHolder holder, final int position) {
             final HashMap<String,String> map=storelist.get(position);
 
             holder.name.setText(map.get("name"));
             holder.price.setText("Per item price :"+" "+getString(R.string.rupee)+map.get("price"));
             holder.quantity.setText("Quantity is :"+" "+map.get("quantity"));
             holder.cost.setText("Total cost:"+" "+getString(R.string.rupee)+map.get("cost"));
+            holder.delete_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    deleteCart(map.get("id"));
+                    storeList.remove(position);
+
+                    notifyDataSetChanged();
+                }
+            });
         }
 
 
@@ -191,8 +274,59 @@ place_order=findViewById(R.id.place_order);
         }
     }
 
+    private void deleteCart(final String id) {
+        progressBar.setVisibility(View.VISIBLE);
+        RequestQueue requestQueue=Volley.newRequestQueue(this);
+        String url = "https://missionlockdown.com/BoozeApp/api/remove-from-cart";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                try {
+                    JSONObject json = new JSONObject(response);
+
+                    Log.d("deleteresponse", response);
+
+                    if (json.getString("success").equalsIgnoreCase("true")) {
+                        /*Intent intent=new Intent( CartActivity.this,CartActivity.class);
+                        startActivity(intent);*/
+                        Toast.makeText(CartActivity.this, "Item removed from cart!", Toast.LENGTH_SHORT).show();
+                        getCartdata();               
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+               progressBar.setVisibility(View.GONE);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+                Toast.makeText(CartActivity.this, "no internet access", Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("product_id", id);
+              
+                return map;
+            }
+
+        };
+        requestQueue.add(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                50000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+    }
+
     private class CartHolder extends RecyclerView.ViewHolder {
         TextView name, price, cost, quantity;
+        ImageView delete_item;
 
         public CartHolder(@NonNull View itemView) {
             super(itemView);
@@ -200,6 +334,7 @@ place_order=findViewById(R.id.place_order);
             price=itemView.findViewById(R.id.price);
             cost=itemView.findViewById(R.id.cost);
             quantity=itemView.findViewById(R.id.quantity);
+            delete_item=itemView.findViewById(R.id.delete_item);
         }
     }
 }

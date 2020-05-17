@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,6 +34,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.sky21.liquor_app.CartActivity;
 import com.sky21.liquor_app.GPSTracker;
 import com.sky21.liquor_app.R;
 import com.sky21.liquor_app.SharedHelper;
@@ -55,13 +57,14 @@ public class MainActivity extends AppCompatActivity {
     GPSTracker gps;
     double latitude;
     double longitude;
-    ImageView profile, search;
+    ImageView profile, search,cart;
     Handler handlers;
     RecyclerView recyclerView;
     ProgressBar progressBar;
     LinearLayoutManager layoutManager;
     ArrayList<HashMap<String, String>> storeList = new ArrayList<>();
     String token;
+
 
 
     @Override
@@ -74,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         search = findViewById(R.id.searchView);
         recyclerView = findViewById(R.id.recyclerview);
         progressBar = findViewById(R.id.progressbar);
-
+cart=findViewById(R.id.cart);
         token = SharedHelper.getKey(this,"token");
 
         gpsmethod();
@@ -98,6 +101,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+                startActivity(intent);
+            }
+        });
+        cart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CartActivity.class);
                 startActivity(intent);
             }
         });
