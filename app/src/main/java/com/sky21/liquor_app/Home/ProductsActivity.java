@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,6 +46,8 @@ import java.util.Map;
 
 public class ProductsActivity extends AppCompatActivity {
     TextView addressTxt,filter;
+    TextView item_count_tv,price_count_tv;
+    LinearLayout view_cart_ll,cart_bottom_sheet_ll;
     ImageView profile,search, cart;
 
     RecyclerView recyclerView;
@@ -62,6 +65,12 @@ public class ProductsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products);
         getSupportActionBar().hide();
+
+        //BottomViewCartSheet
+        cart_bottom_sheet_ll=findViewById(R.id.cart_bottom_sheet_ll);
+        item_count_tv=findViewById(R.id.item_count_tv);
+        price_count_tv=findViewById(R.id.price_count_tv);
+        view_cart_ll=findViewById(R.id.view_cart_ll);
 
         addressTxt=findViewById(R.id.addressId);
         profile=findViewById(R.id.myprofileId);
