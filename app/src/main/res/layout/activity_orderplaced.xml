@@ -55,7 +55,7 @@
             android:fontFamily="@font/calibri"
             android:textSize="18sp"
             android:padding="08dp"
-            android:text="Order placed!"
+            android:text="Order sent for"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:layout_width="match_parent"
@@ -66,7 +66,7 @@
             android:fontFamily="@font/calibri"
             android:textColor="@color/black"
             android:textSize="25dp"
-            android:text="Collect your order."
+            android:text="Confirmation!"
             android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></TextView>
