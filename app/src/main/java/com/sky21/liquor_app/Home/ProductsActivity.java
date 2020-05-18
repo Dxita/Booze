@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,8 +50,15 @@ public class ProductsActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ProgressBar progressBar;
     LinearLayoutManager layoutManager;
+    private   int total =0;
+    private int quantity=0;
+
+    private int ftotal = 0;
+    Map<String, Integer> subTotal = new HashMap<String, Integer>();
+
     ArrayList<HashMap<String, String>> storeList = new ArrayList<>();
     String store_id,token;
+    RelativeLayout relative;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -220,44 +228,80 @@ public class ProductsActivity extends AppCompatActivity {
             holder.price.setText(getString(R.string.rupee)+" "+map.get("price"));
             holder.name.setText(map.get("name"));
             Glide.with(context).load(map.get("image")).into(holder.product_image);
+            final String key = map.get("id");
 
             holder.plus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    int quantity = (Integer.parseInt(holder.counter.getText().toString()));
+                    relative.setVisibility(View.VISIBLE);
+                    quantity = (Integer.parseInt(holder.counter.getText().toString()));
+
+
+
+
                     quantity = quantity + 1;
+
+
+
                     holder.counter.setText(String.valueOf(quantity));
+                    total = Integer.parseInt(map.get("price") )* quantity;
+
+                    subTotal.put(key, total);
+
+                    Log.d("total", "onBindViewHolder: " + total);
+
+
+                    //   subtotal.setText(getString(R.string.rupee)+" "+""+total);
+
+
+                    printMap();
+
                 }
             });
+
+
             holder.minus.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View view) {
 
-                    if (Integer.parseInt(holder.counter.getText().toString())>1)
-                    {
-                        int quantity = (Integer.parseInt(holder.counter.getText().toString()));
+
+
+                    if(quantity < 1) {
+
+                        Toast.makeText(ProductsActivity.this, "0", Toast.LENGTH_SHORT).show();
+
+                    }else {
+
                         quantity = quantity - 1;
+                        total = Integer.parseInt(map.get("price")) * quantity;
+
                         holder.counter.setText(String.valueOf(quantity));
-
-                    }else
-                    {
-
                     }
+                    subTotal.put(key, total);
+                    printMap();
+
+
                 }
+
+
             });
+
+
+
 
             holder.add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    int a= Integer.parseInt(String.valueOf(holder.counter.getText().toString()));
+
+                 /*   int a= Integer.parseInt(String.valueOf(holder.counter.getText().toString()));
                     int b=Integer.parseInt(String.valueOf(map.get("price")));
 
                     String cost= String.valueOf(a*b);
                     Log.d("total",cost);
 
-                    add_to_cart(map.get("id"), a,cost);
+                    add_to_cart(map.get("id"), a,cost);*/
                 }
             });
 
@@ -269,6 +313,31 @@ public class ProductsActivity extends AppCompatActivity {
             return storelist.size();
         }
     }
+
+    public  void printMap( ) {
+
+
+        int t = 0;
+
+        for (int value : subTotal.values()) {
+
+
+            t =  t + value;
+
+        }
+
+
+        //   Toast.makeText(this, "total is: "+t, Toast.LENGTH_SHORT).show();
+
+
+       // subtotal.setText(getString(R.string.rupee)+""+t);
+        Log.d("totttttt", String.valueOf(t));
+        Toast.makeText(ProductsActivity.this, ""+t, Toast.LENGTH_SHORT).show();
+        SharedHelper.putKey(ProductsActivity.this,"totalitem",""+t);
+
+
+    }
+
 
     private void add_to_cart(final String s, final int id, final String toString) {
 
