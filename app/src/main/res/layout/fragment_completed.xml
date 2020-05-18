@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:orientation="vertical"
+<LinearLayout android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:context=".Fragment.CompletedFragment"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
+    <!-- TODO: Update blank fragment layout -->
     <androidx.cardview.widget.CardView
         android:id="@+id/card"
         android:layout_marginTop="5dp"
-        app:contentPadding="0dp"
         android:elevation="20dp"
         app:cardMaxElevation="30dp"
         app:cardElevation="2dp"
@@ -19,6 +19,8 @@
         app:cardBackgroundColor="@color/white">
 
         <RelativeLayout
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -51,26 +53,72 @@
                     android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:orientation="horizontal"
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
                         <TextView
+                            android:text="Old Monk 180ML"
                             android:textAllCaps="true"
                             android:id="@+id/name"
                             android:layout_gravity="center_vertical"
                             android:fontFamily="@font/calibri"
                             android:textColor="@color/black"
                             android:paddingLeft="10dp"
+                            android:padding="05sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textStyle="bold"
                             android:textSize="15dp"/>
 
+                        <TextView
+                            android:visibility="visible"
+                            android:text="RS.180"
+                            android:layout_marginTop="03sp"                            android:fontFamily="@font/calibri"
+                            android:textColor="@color/black"
+                            android:paddingLeft="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="normal"
+                            android:textSize="13dp"/>
+
+                        <TextView
+                            android:visibility="visible"
+                            android:text="3 bottles"
+                            android:layout_marginTop="03sp"                            android:fontFamily="@font/calibri"
+                            android:textColor="@color/black"
+                            android:paddingLeft="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="normal"
+                            android:textSize="13dp"/>
+
+                        <TextView
+                            android:visibility="visible"
+                            android:text="Total cost: Rs.540"
+                            android:layout_marginTop="03sp"                            android:fontFamily="@font/calibri"
+                            android:textColor="@color/black"
+                            android:paddingLeft="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="normal"
+                            android:textSize="13dp"/>
+
+                        <TextView
+                            android:visibility="visible"
+                            android:text="Ordered on : 18/05/2020"
+                            android:layout_marginTop="03sp"                            android:fontFamily="@font/calibri"
+                            android:textColor="@color/black"
+                            android:paddingLeft="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="normal"
+                            android:textSize="13dp"/>
+
                     </LinearLayout>
 
                     <TextView
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:textColor="@color/colorAccent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -83,6 +131,8 @@
                         android:layout_height="wrap_content">
 
                         <TextView
+                            android:visibility="gone"
+                            android:text="RS.180"
                             android:id="@+id/price"
                             android:layout_marginTop="03sp"                            android:fontFamily="@font/calibri"
                             android:textColor="@color/black"
@@ -97,6 +147,7 @@
 
 
                     <LinearLayout
+                        android:visibility="gone"
                         android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -201,4 +252,6 @@
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
-</RelativeLayout>
+
+
+</LinearLayout>

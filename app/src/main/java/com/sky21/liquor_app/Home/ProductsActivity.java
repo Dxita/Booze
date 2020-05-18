@@ -50,8 +50,6 @@ public class ProductsActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ProgressBar progressBar;
     LinearLayoutManager layoutManager;
-    private   int total =0;
-    private int quantity=0;
 
     private int ftotal = 0;
     Map<String, Integer> subTotal = new HashMap<String, Integer>();
@@ -240,28 +238,9 @@ public class ProductsActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    relative.setVisibility(View.VISIBLE);
-                    quantity = (Integer.parseInt(holder.counter.getText().toString()));
-
-
-
-
+                    int quantity = (Integer.parseInt(holder.counter.getText().toString()));
                     quantity = quantity + 1;
-
-
-
                     holder.counter.setText(String.valueOf(quantity));
-                    total = Integer.parseInt(map.get("price") )* quantity;
-
-                    subTotal.put(key, total);
-
-                    Log.d("total", "onBindViewHolder: " + total);
-
-
-                    //   subtotal.setText(getString(R.string.rupee)+" "+""+total);
-
-
-                    printMap();
 
                 }
             });
@@ -271,23 +250,16 @@ public class ProductsActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
-
-
-                    if(quantity < 1) {
-
-                        Toast.makeText(ProductsActivity.this, "0", Toast.LENGTH_SHORT).show();
-
-                    }else {
-
+                    if (Integer.parseInt(holder.counter.getText().toString())>1)
+                    {
+                        int quantity = (Integer.parseInt(holder.counter.getText().toString()));
                         quantity = quantity - 1;
-                        total = Integer.parseInt(map.get("price")) * quantity;
-
                         holder.counter.setText(String.valueOf(quantity));
+
+                    }else
+                    {
+
                     }
-                    subTotal.put(key, total);
-                    printMap();
-
-
                 }
 
 
@@ -301,13 +273,13 @@ public class ProductsActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
 
-                 /*   int a= Integer.parseInt(String.valueOf(holder.counter.getText().toString()));
+                    int a= Integer.parseInt(String.valueOf(holder.counter.getText().toString()));
                     int b=Integer.parseInt(String.valueOf(map.get("price")));
 
                     String cost= String.valueOf(a*b);
                     Log.d("total",cost);
 
-                    add_to_cart(map.get("id"), a,cost);*/
+                    add_to_cart(map.get("id"), a,cost);
                 }
             });
 
@@ -336,7 +308,7 @@ public class ProductsActivity extends AppCompatActivity {
         //   Toast.makeText(this, "total is: "+t, Toast.LENGTH_SHORT).show();
 
 
-       // subtotal.setText(getString(R.string.rupee)+""+t);
+        // subtotal.setText(getString(R.string.rupee)+""+t);
         Log.d("totttttt", String.valueOf(t));
         Toast.makeText(ProductsActivity.this, ""+t, Toast.LENGTH_SHORT).show();
         SharedHelper.putKey(ProductsActivity.this,"totalitem",""+t);

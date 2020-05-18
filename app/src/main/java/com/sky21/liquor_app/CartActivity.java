@@ -247,13 +247,13 @@ place_order=findViewById(R.id.place_order);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull CartHolder holder, final int position) {
+        public void onBindViewHolder(@NonNull final CartHolder holder, final int position) {
             final HashMap<String,String> map=storelist.get(position);
 
             holder.name.setText(map.get("name"));
-            holder.price.setText("Per item price :"+" "+getString(R.string.rupee)+map.get("price"));
-            holder.quantity.setText("Quantity is :"+" "+map.get("quantity"));
-            holder.cost.setText("Total cost:"+" "+getString(R.string.rupee)+map.get("cost"));
+            holder.price.setText(getString(R.string.rupee)+map.get("price"));
+            holder.quantity.setText(map.get("quantity"));
+//            holder.cost.setText("Total cost:"+" "+getString(R.string.rupee)+map.get("cost"));
             holder.delete_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -264,6 +264,55 @@ place_order=findViewById(R.id.place_order);
                     notifyDataSetChanged();
                 }
             });
+
+            holder.plus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    int quantity = (Integer.parseInt(holder.quantity.getText().toString()));
+                    quantity = quantity + 1;
+                    holder.quantity.setText(String.valueOf(quantity));
+
+                    int a= Integer.parseInt(String.valueOf(holder.quantity.getText().toString()));
+                    int b=Integer.parseInt(String.valueOf(map.get("price")));
+
+                    String cost= String.valueOf(a*b);
+                    Log.d("total",cost);
+
+                    add_to_cart(map.get("id"), a,cost);
+
+
+                }
+            });
+
+
+            holder.minus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if (Integer.parseInt(holder.quantity.getText().toString())>1)
+                    {
+                        int quantity = (Integer.parseInt(holder.quantity.getText().toString()));
+                        quantity = quantity - 1;
+                        holder.quantity.setText(String.valueOf(quantity));
+
+                    }else
+                    {
+
+                    }
+
+                    int a= Integer.parseInt(String.valueOf(holder.quantity.getText().toString()));
+                    int b=Integer.parseInt(String.valueOf(map.get("price")));
+
+                    String cost= String.valueOf(a*b);
+                    Log.d("total",cost);
+
+                    add_to_cart(map.get("id"), a,cost);
+
+                }
+
+
+            });
         }
 
 
@@ -272,6 +321,83 @@ place_order=findViewById(R.id.place_order);
         public int getItemCount() {
             return storeList.size();
         }
+    }
+
+    private void getCartdata2() {
+
+        RequestQueue requestQueue= Volley.newRequestQueue(this);
+        String url="https://missionlockdown.com/BoozeApp/api/cart";
+        StringRequest stringRequest=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("cart",response);
+
+                try {
+                    JSONObject jsonObject=new JSONObject(response);
+                    if (jsonObject.getString("success").equalsIgnoreCase("true"))
+                    {
+
+                        cart_total=jsonObject.getString("total");
+                        JSONArray jsonArray=jsonObject.getJSONArray("data");
+                        for(int j=0; j<jsonArray.length(); j++)
+                        {
+
+                            JSONObject object=jsonArray.getJSONObject(j);
+                            HashMap<String,String> params=new HashMap<>();
+                            params.put("id",object.getString("id"));
+                            params.put("user_id",object.getString("user_id"));
+                            params.put("product_id",object.getString("product_id"));
+                            params.put("cost",object.getString("cost"));
+                            Toast.makeText(CartActivity.this, ""+params.get("cost"), Toast.LENGTH_SHORT).show();
+                            params.put("quantity",object.getString("quantity"));
+
+                            JSONObject object1=object.getJSONObject("product");
+                            params.put("id",object1.getString("id"));
+                            params.put("state_id",object1.getString("state_id"));
+                            params.put("name",object1.getString("name"));
+                            params.put("price",object1.getString("price"));
+                            params.put("image",object1.getString("image"));
+
+
+
+
+                        }
+
+
+                    }
+
+                    else
+                    {
+                        delete_all.setVisibility(View.GONE)                      ;
+                        recyclerView.setVisibility(View.GONE);
+                        empty_cart.setVisibility(View.VISIBLE);
+                        place_order.setVisibility(View.GONE);
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        })
+        {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                // Basic Authentication
+                //String auth = "Basic " + Base64.encodeToString(CONSUMER_KEY_AND_SECRET.getBytes(), Base64.NO_WRAP);
+
+                headers.put("Authorization", "Bearer " + token);
+                return headers;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 
     private void deleteCart(final String id) {
@@ -326,15 +452,71 @@ place_order=findViewById(R.id.place_order);
 
     private class CartHolder extends RecyclerView.ViewHolder {
         TextView name, price, cost, quantity;
-        ImageView delete_item;
+        ImageView delete_item,plus,minus;
 
         public CartHolder(@NonNull View itemView) {
             super(itemView);
             name=itemView.findViewById(R.id.name);
             price=itemView.findViewById(R.id.price);
-            cost=itemView.findViewById(R.id.cost);
             quantity=itemView.findViewById(R.id.quantity);
             delete_item=itemView.findViewById(R.id.delete_item);
+            plus=itemView.findViewById(R.id.plus);
+            minus=itemView.findViewById(R.id.minus);
         }
+    }
+
+    private void add_to_cart(final String s, final int id, final String toString) {
+
+        progressBar.setVisibility(View.VISIBLE);
+        String url="https://missionlockdown.com/BoozeApp/api/add-to-cart";
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response){
+                try {
+                    JSONObject json=new JSONObject(response);
+                    if (json.getString("success").equalsIgnoreCase("true"))
+                    {
+
+                       /* Toast.makeText(CartActivity.this, "Added to cart !", Toast.LENGTH_SHORT).show();*/
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "response :" +error, Toast.LENGTH_SHORT).show();
+            }
+        })
+        {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                // Basic Authentication
+                //String auth = "Basic " + Base64.encodeToString(CONSUMER_KEY_AND_SECRET.getBytes(), Base64.NO_WRAP);
+
+                headers.put("Authorization", "Bearer " + token);
+                return headers;
+            }
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map = new HashMap<String,String>();
+                map.put("product_id",s);
+                map.put("quantity", String.valueOf(id));
+                map.put("cost",toString);
+
+                Log.d("map", String.valueOf(map));
+                return map;
+            }
+        };
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                100000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 }

@@ -158,7 +158,8 @@
     </LinearLayout>
 
     <Button
-        android:text="Okay"
+        android:id="@+id/continue_button"
+        android:text="Continue"
         android:textColor="@color/white"
         android:background="@color/golden"
         android:layout_alignParentBottom="true"

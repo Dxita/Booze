@@ -3,4 +3,9 @@
     <string name="rupee">\u20B9</string>
     <string name="title_activity_maps">Map</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="completed">Completed</string>
+    <string name="pending_user">Pending from Your Side</string>
+    <string name="pending_seller">Pending from Store Side</string>
 </resources>

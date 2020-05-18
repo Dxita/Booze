@@ -44,6 +44,7 @@
 
 
     <TextView
+        android:visibility="gone"
         android:layout_below="@+id/topview"
         android:layout_marginTop="05sp"
         android:textStyle="bold"

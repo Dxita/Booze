@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+
+            android:textColor="@color/black"
+            android:id="@+id/city"
+            android:paddingLeft="20dp"
+            android:padding="25dp"
+            android:textSize="18dp"
+            android:text="Noida"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></TextView>
+
+        <RelativeLayout
+            android:id="@+id/add"
+            android:visibility="visible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:padding="10dp"
+                android:gravity="center_vertical"
+                android:fontFamily="@font/calibri"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/bs"
+                android:textSize="12dp"
+
+                android:layout_alignParentRight="true"
+                android:paddingRight="20dp"
+                android:layout_marginTop="30dp"
+                android:text="ADD"
+                android:layout_width="70sp"
+                android:layout_height="wrap_content"></TextView>
+
+            <!--<ImageView
+                android:id="@+id/addplus"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="20dp"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/plus"
+                android:layout_width="30dp"
+                android:layout_height="40dp"></ImageView>-->
+        </RelativeLayout>
+
+        <LinearLayout
+
+            android:visibility="visible"
+            android:layout_marginRight="20dp"
+            android:layout_centerInParent="true"
+            android:id="@+id/counterlayout"
+            android:layout_alignParentEnd="true"
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true">
+
+
+
+
+            <ImageView
+                android:visibility="visible"
+                android:layout_marginTop="16dp"
+                android:id="@+id/minus"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:src="@mipmap/minus" />
+
+            <TextView
+                android:visibility="gone"
+                android:textSize="18dp"
+                android:layout_marginTop="30dp"
+                android:id="@+id/quantity_counter"
+                android:layout_marginLeft="08dp"
+                android:layout_marginRight="08dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                />
+
+            <ImageView
+                android:layout_marginTop="16dp"
+                android:id="@+id/plus"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:src="@mipmap/plus" />
+        </LinearLayout>
+
+
+
+        <TextView
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="38dp"
+            android:paddingLeft="20dp"
+            android:padding="10dp"
+            android:text="Rs."
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></TextView>
+
+        <TextView
+            android:layout_marginLeft="38dp"
+            android:layout_marginTop="35dp"
+            android:id="@+id/description"
+            android:paddingLeft="20dp"
+            android:padding="10dp"
+            android:textSize="17dp"
+            android:text="price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></TextView>
+
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
