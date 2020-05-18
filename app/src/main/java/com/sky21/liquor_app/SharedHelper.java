@@ -24,6 +24,21 @@ public class SharedHelper {
 
     }
 
+    public static void putFilterKey(Context context, String Key, String Value) {
+        sharedPreferences = context.getSharedPreferences("FilterPreferences", Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        editor.putString(Key, Value);
+        editor.commit();
+
+    }
+
+    public static String getFilterKey(Context contextGetKey, String Key) {
+        sharedPreferences = contextGetKey.getSharedPreferences("FilterPreferences", Context.MODE_PRIVATE);
+        String Value = sharedPreferences.getString(Key, "");
+        return Value;
+
+    }
+
 
     /*public static void clearSharedPreferences(Context context)
     {

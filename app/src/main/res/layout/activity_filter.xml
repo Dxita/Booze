@@ -66,21 +66,21 @@
                 android:src="@drawable/ic_shopping_cart_black_24dp" />
 
         </LinearLayout>
-        <View
-            android:background="@color/colorAccent"
-            android:layout_width="match_parent"
-            android:layout_height="0.8sp"></View>
 
-       <!-- <TextView
-            android:id="@+id/unselect_all_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|end"
-            android:padding="10dp"
-            android:text="Unselect All" />-->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.8sp"
+            android:background="@color/colorAccent"></View>
+
+        <!-- <TextView
+             android:id="@+id/unselect_all_tv"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_gravity="center_vertical|end"
+             android:padding="10dp"
+             android:text="Unselect All" />-->
 
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
@@ -92,11 +92,11 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:fontFamily="@font/calibri"
                     android:id="@+id/category_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/white"
+                    android:fontFamily="@font/calibri"
                     android:paddingLeft="20dp"
                     android:paddingTop="20dp"
                     android:paddingRight="40dp"
@@ -107,11 +107,11 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:fontFamily="@font/calibri"
                     android:id="@+id/brand_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/darker_gray"
+                    android:fontFamily="@font/calibri"
                     android:paddingLeft="20dp"
                     android:paddingTop="20dp"
                     android:paddingRight="40dp"
@@ -122,11 +122,11 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:fontFamily="@font/calibri"
                     android:id="@+id/price_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/darker_gray"
+                    android:fontFamily="@font/calibri"
                     android:paddingLeft="20dp"
                     android:paddingTop="20dp"
                     android:paddingRight="40dp"
@@ -139,10 +139,12 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/category_rv_ll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/category_rv"
@@ -152,39 +154,89 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/brands_rv_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/brands_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:listitem="@layout/filter_item_list" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/price_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:padding="15dp"
+                android:visibility="visible">
+
+                <CheckBox
+                    android:id="@+id/high_to_low_cb"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/calibri"
+                    android:paddingLeft="15dp"
+                    android:text="High to low" />
+
+                <CheckBox
+                    android:id="@+id/low_to_high_cb"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="25dp"
+                    android:fontFamily="@font/calibri"
+                    android:paddingLeft="15dp"
+                    android:text="Low to high" />
+
+            </LinearLayout>
+
         </LinearLayout>
     </LinearLayout>
 
 
     <LinearLayout
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
 
         <Button
-            android:textStyle="bold"
-            android:fontFamily="@font/calibri"
-            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@color/colorAccent"
-            android:text="Clear Filters"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"></Button>
-        <Button
-            android:textStyle="bold"
             android:fontFamily="@font/calibri"
-            android:background="@color/golden"
+            android:paddingLeft="20dp"
+            android:paddingTop="15dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="15dp"
+            android:text="Clear Filters"
             android:textColor="@color/white"
-            android:layout_weight="1"
-            android:text="Apply"
+            android:textStyle="bold" />
+
+
+        <Button
             android:layout_width="0dp"
-            android:layout_height="wrap_content"></Button>
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/golden"
+            android:fontFamily="@font/calibri"
+            android:text="Apply"
+            android:textColor="@color/white"
+            android:textStyle="bold"></Button>
     </LinearLayout>
+
     <ProgressBar
-        android:visibility="gone"
-        android:layout_centerInParent="true"
         android:id="@+id/progressbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ProgressBar>
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"></ProgressBar>
 </RelativeLayout>
