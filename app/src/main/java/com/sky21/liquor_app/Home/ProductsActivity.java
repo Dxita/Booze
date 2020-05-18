@@ -193,8 +193,14 @@ public class ProductsActivity extends AppCompatActivity {
                 return headers;
             }
 
-
-
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//                Map<String,String> map = new HashMap<>();
+//                map.put("searched_name","old");
+//                map.put("category_id","1");
+//                map.put("brand_id","1");
+//                return map;
+//            }
         };
 
         requestQueue.add(stringRequest);

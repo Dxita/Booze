@@ -1,11 +1,20 @@
 package com.sky21.liquor_app.models;
 
+import android.widget.CheckBox;
+
+import java.util.HashMap;
+import java.util.List;
+
 public class FilterModel {
     boolean isSelected;
-    String item_name;
+    HashMap<String,String> hashList;
 
-    public FilterModel(String item_name) {
-        this.item_name = item_name;
+    String id;
+    String category;
+    String brand;
+
+    public FilterModel(HashMap<String, String> hashList) {
+        this.hashList = hashList;
     }
 
     public boolean isSelected() {
@@ -16,11 +25,35 @@ public class FilterModel {
         isSelected = selected;
     }
 
-    public String getItem_name() {
-        return item_name;
+    public HashMap<String, String> getHashList() {
+        return hashList;
     }
 
-    public void setItem_name(String item_name) {
-        this.item_name = item_name;
+    public void setHashList(HashMap<String, String> hashList) {
+        this.hashList = hashList;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
     }
 }
