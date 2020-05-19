@@ -178,7 +178,7 @@ place_order=findViewById(R.id.place_order);
                             params.put("cost",object.getString("cost"));
                             params.put("quantity",object.getString("quantity"));
 
-                           JSONObject object1=object.getJSONObject("product");
+                            JSONObject object1=object.getJSONObject("product");
                             params.put("id",object1.getString("id"));
                             params.put("state_id",object1.getString("state_id"));
                             params.put("name",object1.getString("name"));
