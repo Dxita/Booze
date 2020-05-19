@@ -36,6 +36,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.sky21.liquor_app.CartActivity;
 import com.sky21.liquor_app.GPSTracker;
+import com.sky21.liquor_app.ListActivity;
 import com.sky21.liquor_app.R;
 import com.sky21.liquor_app.SharedHelper;
 import com.sky21.liquor_app.UserAccount.ProfileActivity;
@@ -257,7 +258,7 @@ cart=findViewById(R.id.cart);
             holder.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getApplicationContext(), ProductsActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), ListActivity .class);
                     intent.putExtra("ID", map.get("id"));
                     startActivity(intent);
                 }
