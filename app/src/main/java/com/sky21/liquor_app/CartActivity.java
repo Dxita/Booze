@@ -50,8 +50,8 @@ public class CartActivity extends AppCompatActivity {
     Button place_order;
     String cart_total;
     ImageView empty_cart;
-    final String[] time = new String[1];
-
+    String total_cost;
+     String time ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,11 +104,13 @@ public class CartActivity extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.show();
 
+        final TextView time_text;
 
 
         TimePicker simpleTimePicker;
 
         simpleTimePicker = (TimePicker) dialog.findViewById(R.id.simpleTimePicker);
+        time_text=dialog.findViewById(R.id.time_txt);
         simpleTimePicker.setIs24HourView(false);
 
 
@@ -117,8 +119,11 @@ public class CartActivity extends AppCompatActivity {
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
                 // display a toast with changed values of time picker
                 Toast.makeText(getApplicationContext(), hourOfDay + "  " + minute, Toast.LENGTH_SHORT).show();
-                time[0] = hourOfDay + " : " + minute;
-            //time.setText("Time is :: " + hourOfDay + " : " + minute); // set the current time in text view
+            time_text.setText(hourOfDay + " : " + minute);// set the current time in text view
+
+                time= time_text.getText().toString();
+
+
             }
         });
 
@@ -128,7 +133,6 @@ public class CartActivity extends AppCompatActivity {
             public void onClick(View view) {
                 dialog.dismiss();
 
-                Toast.makeText(CartActivity.this, ""+ time[0], Toast.LENGTH_SHORT).show();
 
                 orderplace();
                 /*Intent intent=new Intent(CartActivity.this,LoginActivity.class);
@@ -146,6 +150,37 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
 
+                Log.d("vvvvvvvvvvvvvvvv",response);
+                try {
+                    JSONObject jsonObject=new JSONObject(response);
+                    if (jsonObject.getString("success").equalsIgnoreCase("true"))
+                    {
+                        JSONArray jsonArray=jsonObject.getJSONArray("data");
+                        for (int i=0; i<jsonArray.length(); i++)
+                        {
+                            JSONObject object=jsonArray.getJSONObject(i);
+                            HashMap<String,String>map=new HashMap<>();
+                            map.put("order_id", object.getString("order_id"));
+                            map.put("total_cost",object.getString("total_cost"));
+                            total_cost=map.get("total_cost");
+
+                        }
+
+                        Intent intent=new Intent(getApplicationContext(),OrderplacedActivity.class);
+                        intent.putExtra("COST",total_cost);
+                        startActivity(intent);
+                    }
+                    else
+                    {
+                       empty_cart.setVisibility(View.VISIBLE);
+                       recyclerView.setVisibility(View.GONE);
+                       place_order.setVisibility(View.GONE);
+                       delete_all.setVisibility(View.GONE);
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
@@ -154,13 +189,31 @@ public class CartActivity extends AppCompatActivity {
             }
         })
         {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                // Basic Authentication
+                //String auth = "Basic " + Base64.encodeToString(CONSUMER_KEY_AND_SECRET.getBytes(), Base64.NO_WRAP);
+
+                headers.put("Authorization", "Bearer " + token);
+                return headers;
+            }
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String>map=new HashMap<>();
-                map.put("pick_up_time", String.valueOf(time));
+                map.put("pick_up_time", "10.30");
+                map.put("store_id",SharedHelper.getKey(CartActivity.this,"store_id"));
+                
+                Log.d("time", String.valueOf(map));
                 return map;
             }
         };
+        requestQueue.add(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                100000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)); 
     }
 
     private void delete() {
@@ -296,6 +349,10 @@ public class CartActivity extends AppCompatActivity {
             }
         };
         requestQueue.add(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                100000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
 
