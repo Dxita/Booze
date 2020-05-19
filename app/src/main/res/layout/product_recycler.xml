@@ -151,6 +151,7 @@
                         </LinearLayout>
 
                         <Button
+                            android:visibility="gone"
                             android:id="@+id/add"
                             android:textStyle="bold"
                             android:fontFamily="@font/calibri"
