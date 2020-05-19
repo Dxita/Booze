@@ -60,6 +60,8 @@ public class ProductsActivity extends AppCompatActivity implements DataTransferL
     private int ftotal = 0;
     Map<String, Integer> subTotal = new HashMap<String, Integer>();
 
+    private   int total =0;
+    private int quantity=0;
     List<ProductModel> storeList_1 = new ArrayList<>();
     Mainadapter mainadapter;
     String store_id, token;
@@ -313,6 +315,7 @@ public class ProductsActivity extends AppCompatActivity implements DataTransferL
         @Override
         public void onBindViewHolder(@NonNull final MyHolder holder, final int position) {
             final ProductModel map = storelist.get(position);
+
             if (map != null) {
                 holder.price.setText(getString(R.string.rupee) + " " + map.getMapList().get("price"));
                 holder.name.setText(map.getMapList().get("name"));
@@ -322,8 +325,42 @@ public class ProductsActivity extends AppCompatActivity implements DataTransferL
                 holder.plus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                      cart_bottom_sheet_ll.setVisibility(View.VISIBLE);
+                        quantity = (Integer.parseInt(holder.counter.getText().toString()));
 
-                        int quantity = (Integer.parseInt(holder.counter.getText().toString()));
+
+
+
+                        quantity = quantity + 1;
+
+
+
+                        holder.counter.setText(String.valueOf(quantity));
+                        total = Integer.parseInt(map.getMapList().get("price") )* quantity;
+
+                        subTotal.put(key, total);
+
+                        Log.d("total", "onBindViewHolder: " + total);
+
+
+
+                        int a = Integer.parseInt(String.valueOf(holder.counter.getText().toString()));
+                        int b = Integer.parseInt(String.valueOf(map.getMapList().get("price")));
+
+                        String cost = String.valueOf(a * b);
+                        Log.d("total", cost);
+
+                        map.setId(map.getMapList().get("id"));
+                        map.setQuantity(quantity);
+                        map.setTotalCost(cost);
+                        ((DataTransferListener)context).getProductData(key,map.getQuantity(),map.getTotalCost());
+
+                        //   subtotal.setText(getString(R.string.rupee)+" "+""+total);
+
+
+                        printMap();
+
+                        /*int quantity = (Integer.parseInt(holder.counter.getText().toString()));
                         quantity = quantity + 1;
                         holder.counter.setText(String.valueOf(quantity));
 
@@ -337,16 +374,48 @@ public class ProductsActivity extends AppCompatActivity implements DataTransferL
                         map.setQuantity(quantity);
                         map.setTotalCost(cost);
 
-                        ((DataTransferListener)context).getProductData(key,map.getQuantity(),map.getTotalCost());
+                        ((DataTransferListener)context).getProductData(key,map.getQuantity(),map.getTotalCost());*/
                     }
                 });
+/*
 
+                if (quantity==0){
+                    cart_bottom_sheet_ll.setVisibility(View.GONE);
+                }
+*/
 
                 holder.minus.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
-                        if (Integer.parseInt(holder.counter.getText().toString()) > 1) {
+                        if(quantity < 1) {
+
+                            //cart_bottom_sheet_ll.setVisibility(View.GONE);
+                            price_count_tv.setText(getString(R.string.rupee)+"0");
+                            //holder.counter.setVisibility(View.GONE);
+                            Toast.makeText(ProductsActivity.this, "0", Toast.LENGTH_SHORT).show();
+
+                        }else {
+
+                            quantity = quantity - 1;
+                            total = Integer.parseInt(map.getMapList().get("price")) * quantity;
+
+                            holder.counter.setText(String.valueOf(quantity));
+                        }
+                        subTotal.put(key, total);
+                        printMap();
+
+                        int a = Integer.parseInt(String.valueOf(holder.counter.getText().toString()));
+                        int b = Integer.parseInt(String.valueOf(map.getMapList().get("price")));
+
+                        String cost = String.valueOf(b / a);
+
+                        map.setId(map.getMapList().get("id"));
+                        map.setQuantity(quantity);
+                        map.setTotalCost(cost);
+
+                        ((DataTransferListener)context).getProductData(key,map.getQuantity(),map.getTotalCost());
+                       /* if (Integer.parseInt(holder.counter.getText().toString()) > 1) {
                             int quantity = (Integer.parseInt(holder.counter.getText().toString()));
                             quantity = quantity - 1;
                             holder.counter.setText(String.valueOf(quantity));
@@ -363,7 +432,7 @@ public class ProductsActivity extends AppCompatActivity implements DataTransferL
                             ((DataTransferListener)context).getProductData(key,map.getQuantity(),map.getTotalCost());
                         } else {
 
-                        }
+                        }*/
                     }
 
                 });
@@ -385,6 +454,8 @@ public class ProductsActivity extends AppCompatActivity implements DataTransferL
         }
         //   Toast.makeText(this, "total is: "+t, Toast.LENGTH_SHORT).show();
         // subtotal.setText(getString(R.string.rupee)+""+t);
+        price_count_tv.setText(getString(R.string.rupee)+String.valueOf(t));
+
         Log.d("totttttt", String.valueOf(t));
         Toast.makeText(ProductsActivity.this, "" + t, Toast.LENGTH_SHORT).show();
         SharedHelper.putKey(ProductsActivity.this, "totalitem", "" + t);
