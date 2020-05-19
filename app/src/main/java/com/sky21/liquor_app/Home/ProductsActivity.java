@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -32,7 +31,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.sky21.liquor_app.CartActivity;
-import com.sky21.liquor_app.DataTransferListener;
+import com.sky21.liquor_app.interfaces.DataTransferListener;
 import com.sky21.liquor_app.R;
 import com.sky21.liquor_app.SharedHelper;
 import com.sky21.liquor_app.UserAccount.ProfileActivity;
@@ -102,7 +101,12 @@ public class ProductsActivity extends AppCompatActivity implements DataTransferL
         filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString("ID",store_id);
                 Intent intent = new Intent(getApplicationContext(), FilterActivity.class);
+                if (bundle != null){
+                    intent.putExtras(bundle);
+                }
                 startActivity(intent);
             }
         });
@@ -134,11 +138,7 @@ public class ProductsActivity extends AppCompatActivity implements DataTransferL
         });
 
         layoutManager = new LinearLayoutManager(getApplicationContext());
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
         api();
     }
 

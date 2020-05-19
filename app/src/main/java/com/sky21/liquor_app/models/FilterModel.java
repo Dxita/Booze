@@ -1,9 +1,8 @@
 package com.sky21.liquor_app.models;
 
-import android.widget.CheckBox;
-
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 public class FilterModel {
     boolean isSelected;
