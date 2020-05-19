@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,7 +34,9 @@ import com.sky21.liquor_app.CartActivity;
 import com.sky21.liquor_app.R;
 import com.sky21.liquor_app.SharedHelper;
 import com.sky21.liquor_app.UserAccount.ProfileActivity;
+import com.sky21.liquor_app.interfaces.FilterDataTransterListener;
 import com.sky21.liquor_app.models.FilterModel;
+import com.sky21.liquor_app.models.ProductModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,11 +47,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FilterActivity extends AppCompatActivity {
+public class FilterActivity extends AppCompatActivity implements FilterDataTransterListener{
     TextView backspace, unselect_all_tv;
     TextView category_tv, brand_tv, price_tv;
     RecyclerView recycler_view, brands_rv;
     ImageView profile, search, cart;
+
+    Button apply_btn;
 
     FilterAdapter adapter;
     List<FilterModel> categorylist;
@@ -60,6 +66,8 @@ public class FilterActivity extends AppCompatActivity {
     LinearLayout category_rv_ll, brands_rv_ll, price_ll;
 
     List<FilterModel> list;
+
+    String store_id = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,15 +92,20 @@ public class FilterActivity extends AppCompatActivity {
         cart = findViewById(R.id.cart);
         high_to_low_cb = findViewById(R.id.high_to_low_cb);
         low_to_high_cb = findViewById(R.id.low_to_high_cb);
+        apply_btn = findViewById(R.id.apply_btn);
 
-        category_tv.setBackgroundColor(Color.WHITE);
-        brand_tv.setBackgroundColor(Color.GRAY);
-        price_tv.setBackgroundColor(Color.GRAY);
+        category_tv.setBackgroundColor(getResources().getColor(R.color.golden));
+        brand_tv.setBackgroundColor(Color.WHITE);
+        price_tv.setBackgroundColor(Color.WHITE);
+        category_tv.setTextColor(Color.WHITE);
+        brand_tv.setTextColor(Color.BLACK);
+        price_tv.setTextColor(Color.BLACK);
 
         progressBar = findViewById(R.id.progressbar);
         recycler_view = findViewById(R.id.category_rv);
         brands_rv = findViewById(R.id.brands_rv);
 
+        store_id = getIntent().getStringExtra("ID");
 
         backspace = findViewById(R.id.addressId);
         backspace.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +140,14 @@ public class FilterActivity extends AppCompatActivity {
             }
         });
 
+        apply_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FilterActivity.this,ProductsActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         category_rv_ll.setVisibility(View.VISIBLE);
         brands_rv_ll.setVisibility(View.GONE);
@@ -137,9 +158,12 @@ public class FilterActivity extends AppCompatActivity {
                 category_rv_ll.setVisibility(View.VISIBLE);
                 brands_rv_ll.setVisibility(View.GONE);
                 price_ll.setVisibility(View.GONE);
-                category_tv.setBackgroundColor(Color.WHITE);
-                brand_tv.setBackgroundColor(Color.GRAY);
-                price_tv.setBackgroundColor(Color.GRAY);
+                category_tv.setBackgroundColor(getResources().getColor(R.color.golden));
+                brand_tv.setBackgroundColor(Color.WHITE);
+                price_tv.setBackgroundColor(Color.WHITE);
+                category_tv.setTextColor(Color.WHITE);
+                brand_tv.setTextColor(Color.BLACK);
+                price_tv.setTextColor(Color.BLACK);
 
                 //categoryApiCall();
             }
@@ -151,9 +175,12 @@ public class FilterActivity extends AppCompatActivity {
                 category_rv_ll.setVisibility(View.GONE);
                 brands_rv_ll.setVisibility(View.VISIBLE);
                 price_ll.setVisibility(View.GONE);
-                category_tv.setBackgroundColor(Color.GRAY);
-                brand_tv.setBackgroundColor(Color.WHITE);
-                price_tv.setBackgroundColor(Color.GRAY);
+                category_tv.setBackgroundColor(Color.WHITE);
+                brand_tv.setBackgroundColor(getResources().getColor(R.color.golden));
+                price_tv.setBackgroundColor(Color.WHITE);
+                category_tv.setTextColor(Color.BLACK);
+                brand_tv.setTextColor(Color.WHITE);
+                price_tv.setTextColor(Color.BLACK);
                 //brandsApiCall();
             }
         });
@@ -164,9 +191,12 @@ public class FilterActivity extends AppCompatActivity {
                 category_rv_ll.setVisibility(View.GONE);
                 brands_rv_ll.setVisibility(View.GONE);
                 price_ll.setVisibility(View.VISIBLE);
-                category_tv.setBackgroundColor(Color.GRAY);
-                brand_tv.setBackgroundColor(Color.GRAY);
-                price_tv.setBackgroundColor(Color.WHITE);
+                category_tv.setBackgroundColor(Color.WHITE);
+                brand_tv.setBackgroundColor(Color.WHITE);
+                price_tv.setBackgroundColor(getResources().getColor(R.color.golden));
+                category_tv.setTextColor(Color.BLACK);
+                brand_tv.setTextColor(Color.BLACK);
+                price_tv.setTextColor(Color.WHITE);
             }
         });
 
@@ -189,14 +219,14 @@ public class FilterActivity extends AppCompatActivity {
     private void setCategoryRecyclerView(List<FilterModel> list) {
         recycler_view.setHasFixedSize(true);
         recycler_view.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new FilterAdapter(this, list);
+        adapter = new FilterAdapter(this, list,this);
         recycler_view.setAdapter(adapter);
     }
 
     private void setBrandsRecyclerView(List<FilterModel> list) {
         brands_rv.setHasFixedSize(true);
         brands_rv.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new FilterAdapter(this, list);
+        adapter = new FilterAdapter(this, list,this);
         brands_rv.setAdapter(adapter);
     }
 
@@ -325,15 +355,30 @@ public class FilterActivity extends AppCompatActivity {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+    @Override
+    public void getFilterData(Integer[] categoryId, Integer[] brandId) {
+        for (int i = 0; i < categoryId.length; i++)
+        Toast.makeText(this, categoryId[i], Toast.LENGTH_SHORT).show();
+    }
+
     public static class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder> {
 
         Context context;
         List<FilterModel> list;
         List<FilterModel> checkedlist = new ArrayList<>();
 
-        public FilterAdapter(Context context, List<FilterModel> list) {
+        FilterDataTransterListener listener;
+
+        public FilterAdapter(Context context, List<FilterModel> list,FilterDataTransterListener listener) {
             this.context = context;
             this.list = list;
+            this.listener = listener;
         }
 
         @NonNull
@@ -348,9 +393,72 @@ public class FilterActivity extends AppCompatActivity {
             final FilterModel item = list.get(position);
             if (item.getHashList().containsKey("category")) {
                 holder.checkbox.setText(item.getHashList().get("category"));
+                if (item.isSelected()) {
+                    holder.checkbox.setChecked(true);
+
+                } else {
+                    holder.checkbox.setChecked(false);
+                    holder.setItemClickListener(new ViewHolder.ItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            CheckBox checkBox = (CheckBox) view;
+                            if (checkBox.isChecked()) {
+                                checkedlist.add(list.get(position));
+                                item.setId(item.getHashList().get("id"));
+                                item.setCategory(item.getHashList().get("category"));
+                                item.setSelected(true);
+
+                                int id = Integer.parseInt(item.getId());
+
+                                Integer[] categoryId = new Integer[list.size()];
+                                for (int i = 0; i < list.size(); i++){
+                                    categoryId[i] = id;
+                                    ((FilterDataTransterListener)context).getFilterData(new Integer[]{categoryId[i]},null);
+                                }
+
+
+
+
+
+                            } else if (!checkBox.isChecked()) {
+                                checkedlist.remove(list.get(position));
+                                item.setSelected(false);
+                            }
+                        }
+                    });
+                }
             }
             if (item.getHashList().containsKey("brand")) {
                 holder.checkbox.setText(item.getHashList().get("brand"));
+                if (item.isSelected()) {
+                    holder.checkbox.setChecked(true);
+
+                } else {
+                    holder.checkbox.setChecked(false);
+                    holder.setItemClickListener(new ViewHolder.ItemClickListener() {
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            CheckBox checkBox = (CheckBox) view;
+                            if (checkBox.isChecked()) {
+                                checkedlist.add(list.get(position));
+                                item.setId(item.getHashList().get("id"));
+                                item.setBrand(item.getHashList().get("brand"));
+                                item.setSelected(true);
+
+                                int id = Integer.parseInt(item.getId());
+
+                                Integer[] brandId = new Integer[list.size()];
+                                for (int i = 0; i < list.size(); i++){
+                                    brandId[i] = id;
+                                    ((FilterDataTransterListener)context).getFilterData(null,new Integer[]{brandId[i]});
+                                }
+                            } else if (!checkBox.isChecked()) {
+                                checkedlist.remove(list.get(position));
+                                item.setSelected(false);
+                            }
+                        }
+                    });
+                }
             }
 //            holder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 //                @Override
@@ -366,33 +474,12 @@ public class FilterActivity extends AppCompatActivity {
 //                }
 //            });
 
-            if (item != null) {
-
-                if (item.isSelected()) {
-                    holder.checkbox.setChecked(true);
-
-                } else {
-                    holder.checkbox.setChecked(false);
-                    holder.setItemClickListener(new ViewHolder.ItemClickListener() {
-                        @Override
-                        public void onItemClick(View view, int position) {
-                            CheckBox checkBox = (CheckBox) view;
-                            if (checkBox.isChecked()) {
-                                checkedlist.add(list.get(position));
-                                item.setId(item.getHashList().get("id"));
-                                item.setCategory(item.getHashList().get("category"));
-                                item.setBrand(item.getHashList().get("brand"));
-                                item.setSelected(true);
-                            } else if (!checkBox.isChecked()) {
-                                checkedlist.remove(list.get(position));
-                                item.setSelected(false);
-                            }
-                        }
-                    });
-                }
-            } else {
-                return;
-            }
+//            if (item != null) {
+//
+//
+//            } else {
+//                return;
+//            }
         }
 
         @Override
