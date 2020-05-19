@@ -363,8 +363,10 @@ public class FilterActivity extends AppCompatActivity implements FilterDataTrans
 
     @Override
     public void getFilterData(Integer[] categoryId, Integer[] brandId) {
-        for (int i = 0; i < categoryId.length; i++)
-        Toast.makeText(this, categoryId[i], Toast.LENGTH_SHORT).show();
+        for (Integer id : categoryId){
+            Toast.makeText(this,"Id: " + id, Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public static class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder> {
