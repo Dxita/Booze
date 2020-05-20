@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -66,7 +67,8 @@ public class FilterActivity extends AppCompatActivity implements FilterDataTrans
     LinearLayout category_rv_ll, brands_rv_ll, price_ll;
 
     String store_id = "";
-    int value_1,value_0;
+    int value = 0;
+    int category_id,brand_id;
     ProductsActivity productsActivity;
     public static final int ONLY_CATEGORY_KEY = 1001;
     public static final int ONLY_BRAND_KEY = 1002;
@@ -143,7 +145,7 @@ public class FilterActivity extends AppCompatActivity implements FilterDataTrans
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(FilterActivity.this,ProductsActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,ONLY_ALL_KEY);
             }
         });
 
@@ -199,14 +201,14 @@ public class FilterActivity extends AppCompatActivity implements FilterDataTrans
         high_to_low_cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                value_1 = 1;
+                value = 1;
             }
         });
 
         low_to_high_cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                value_0 = 0;
+                value = 0;
             }
         });
 
@@ -440,28 +442,48 @@ public class FilterActivity extends AppCompatActivity implements FilterDataTrans
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
-    private Integer getCategoryId(int category_id){
+    private Integer getCategoryId(){
         return category_id;
     }
 
-    private Integer getBrandId(int brand_id){
+    private Integer getBrandId(){
         return brand_id;
+    }
+
+    private Integer getValue(){
+        return value;
     }
 
     @Override
     public void getFilterData(Integer[] categoryId, Integer[] brandId) {
         if (categoryId.length > 0){
             for (int i = 0; i < categoryId.length; i++){
-                getCategoryId(categoryId[i]);
-                productApi(store_id,categoryId[i],0,0);
+                category_id = categoryId[i];
             }
         }
 
         if (brandId.length > 0){
             for (int j = 0; j < brandId.length; j++){
-                getBrandId(brandId[j]);
-                productApi(store_id,0,brandId[j],0);
+                brand_id = brandId[j];
             }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ONLY_ALL_KEY && resultCode == RESULT_OK && data != null){
+            productApi(store_id,getCategoryId(),getBrandId(),getValue());
+        } else if (requestCode == ONLY_CATEGORY_KEY && resultCode == RESULT_OK && data != null){
+            productApi(store_id,getCategoryId(),0,0);
+        } else if (requestCode == ONLY_BRAND_KEY && resultCode == RESULT_OK && data != null){
+            productApi(store_id,0,getBrandId(),0);
+        } else if (requestCode == ONLY_PRICE_KEY && resultCode == RESULT_OK && data != null){
+            productApi(store_id,0,0,getValue());
+        } else if (requestCode == ONLY_NOTHING_KEY && resultCode == RESULT_OK && data != null){
+            productApi(store_id,0,0,0);
+        } else {
+            return;
         }
     }
 
