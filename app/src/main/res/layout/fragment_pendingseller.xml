@@ -8,107 +8,191 @@
     tools:context=".Fragment.PendingsellerFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <androidx.cardview.widget.CardView
-        android:layout_marginTop="10sp"
-        android:layout_marginRight="10sp"
-        android:layout_marginLeft="10sp"
+    <LinearLayout
+        android:orientation="vertical"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_marginBottom="10sp"
-            android:orientation="vertical"
+        android:layout_height="match_parent"
+        tools:context=".Fragment.PendingsellerFragment">
+
+        <!-- TODO: Update blank fragment layout -->
+        <androidx.cardview.widget.CardView
+            android:layout_marginTop="10sp"
+            android:layout_marginRight="10sp"
+            android:layout_marginLeft="10sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_weight="1"
-                    android:padding="10sp"
-                    android:text="Old Monk 180ML X 3 "
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></TextView>
-
-                <TextView
-                    android:padding="10sp"
-                    android:text="Rs.180/- "
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></TextView>
-
-            </LinearLayout>
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_weight="1"
-                    android:padding="10sp"
-                    android:text="Tuborg X 3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"></TextView>
-
-                <TextView
-                    android:padding="10sp"
-                    android:text="Rs.180/- "
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></TextView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_weight="1"
-                    android:padding="10sp"
-                    android:text="Bira X 4"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"></TextView>
-
-                <TextView
-                    android:padding="10sp"
-                    android:text="Rs.180/- "
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"></TextView>
-            </LinearLayout>
-
-            <View
-                android:background="@color/colorAccent"
-                android:layout_width="match_parent"
-                android:layout_height="0.8dp"></View>
-            <TextView
-
-                android:layout_gravity="right"
-                android:textStyle="bold"
-                android:padding="10sp"
-                android:text="Rs.180/- "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"></TextView>
-
-            <LinearLayout
-                android:layout_marginTop="08sp"
-                android:orientation="horizontal"
+                android:layout_marginBottom="10sp"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <Button
-                    android:layout_marginLeft="10sp"
-                    android:layout_marginRight="10sp"
-                    android:textColor="@color/white"
-                    android:text="Pending"
-                    android:background="@color/red"
+                <TextView
+                    android:paddingLeft="10sp"
                     android:layout_weight="1"
-                    android:layout_width="0dp"
-                    android:textSize="12sp"
-                    android:layout_height="40sp"></Button>
+                    android:text="Old monk 180 ML"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></TextView>
+                <TextView
+                    android:paddingLeft="10sp"
+                    android:layout_weight="1"
+                    android:text="QTY: 3 bottles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></TextView>
+                <TextView
+                    android:paddingLeft="10sp"
+                    android:layout_weight="1"
+                    android:text="Rs.180 per bottle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></TextView>
+                <View
+                    android:background="@color/colorAccent"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5sp"></View>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:visibility="gone"
+                        android:layout_weight="1"
+                        android:padding="10sp"
+                        android:text="Old Monk 180ML X 3 "
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"></TextView>
+
+                    <TextView
+                        android:gravity="right"
+                        android:layout_gravity="right"
+                        android:padding="10sp"
+                        android:text="Rs.540/- "
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></TextView>
+
+                </LinearLayout>
+
+                <TextView
+                    android:paddingLeft="10sp"
+                    android:layout_weight="1"
+                    android:text="Tuborg Strong "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></TextView>
+                <TextView
+                    android:paddingLeft="10sp"
+                    android:layout_weight="1"
+                    android:text="QTY: 10 bottles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></TextView>
+                <TextView
+                    android:paddingLeft="10sp"
+                    android:layout_weight="1"
+                    android:text="Rs.120 per bottle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></TextView>
+                <View
+                    android:background="@color/colorAccent"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5sp"></View>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:visibility="gone"
+                        android:layout_weight="1"
+                        android:padding="10sp"
+                        android:text="Tuborg X 3"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"></TextView>
+
+                    <TextView
+                        android:gravity="right"
+                        android:padding="10sp"
+                        android:text="Rs.360/- "
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></TextView>
+                </LinearLayout>
+                <TextView
+                    android:paddingLeft="10sp"
+                    android:layout_weight="1"
+                    android:text="Tuborg Strong "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></TextView>
+                <TextView
+                    android:paddingLeft="10sp"
+                    android:layout_weight="1"
+                    android:text="QTY: 10 bottles"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></TextView>
+                <TextView
+                    android:paddingLeft="10sp"
+                    android:layout_weight="1"
+                    android:text="Rs.120 per bottle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></TextView>
+                <View
+                    android:background="@color/colorAccent"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5sp"></View>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:visibility="gone"
+                        android:layout_weight="1"
+                        android:padding="10sp"
+                        android:text="Bira X 4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"></TextView>
+
+                    <TextView
+                        android:gravity="right"
+                        android:padding="10sp"
+                        android:text="Rs.360/- "
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"></TextView>
+                </LinearLayout>
+
+                <View
+                    android:background="@color/colorAccent"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.8dp"></View>
+                <TextView
+
+                    android:layout_gravity="right"
+                    android:textStyle="bold"
+                    android:padding="10sp"
+                    android:text="Rs.1260,/- "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></TextView>
+
+                <LinearLayout
+                    android:layout_marginTop="08sp"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:layout_marginLeft="10sp"
+                        android:layout_marginRight="10sp"
+                        android:textColor="@color/white"
+                        android:text="Pending"
+                        android:background="@color/red"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
+                        android:textSize="12sp"
+                        android:layout_height="40sp"></Button>
 
 
+                </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
 
 
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
 
 </LinearLayout>

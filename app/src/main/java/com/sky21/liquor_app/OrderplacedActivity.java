@@ -33,7 +33,7 @@ public class OrderplacedActivity extends AppCompatActivity {
         });
 
         final Intent intent=getIntent();
-        cart_cost=intent.getStringExtra("TOTAL");
+        cart_cost=intent.getStringExtra("COST");
         item_total.setText(getString(R.string.rupee)+cart_cost);
         total.setText(getString(R.string.rupee)+cart_cost);
 

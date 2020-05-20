@@ -138,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                             JSONObject object = jsonArray.getJSONObject(j);
                             HashMap<String, String> params = new HashMap<>();
                             params.put("id", object.getString("id"));
+                            SharedHelper.putKey(MainActivity.this,"store_id",params.get("id"));
                             params.put("name", object.getString("name"));
                             params.put("lat", object.getString("lat"));
                             params.put("long", object.getString("long"));
