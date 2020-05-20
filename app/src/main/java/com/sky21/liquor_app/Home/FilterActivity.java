@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -17,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,20 +65,21 @@ public class FilterActivity extends AppCompatActivity implements FilterDataTrans
     CheckBox high_to_low_cb, low_to_high_cb;
     LinearLayout category_rv_ll, brands_rv_ll, price_ll;
 
-    List<FilterModel> list;
-
     String store_id = "";
-
+    int value_1,value_0;
+    ProductsActivity productsActivity;
+    public static final int ONLY_CATEGORY_KEY = 1001;
+    public static final int ONLY_BRAND_KEY = 1002;
+    public static final int ONLY_PRICE_KEY = 1003;
+    public static final int ONLY_ALL_KEY = 1004;
+    public static final int ONLY_NOTHING_KEY = 1005;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_filter);
         getSupportActionBar().hide();
-
-        list = new ArrayList<>();
-//        for (FilterModel item : list){
-//            Toast.makeText(this, item.getItem_name(), Toast.LENGTH_SHORT).show();
-//        }
+        productsActivity = new ProductsActivity();
+        store_id = getIntent().getStringExtra("Id");
 
         category_rv_ll = findViewById(R.id.category_rv_ll);
         brands_rv_ll = findViewById(R.id.brands_rv_ll);
@@ -104,8 +105,6 @@ public class FilterActivity extends AppCompatActivity implements FilterDataTrans
         progressBar = findViewById(R.id.progressbar);
         recycler_view = findViewById(R.id.category_rv);
         brands_rv = findViewById(R.id.brands_rv);
-
-        store_id = getIntent().getStringExtra("ID");
 
         backspace = findViewById(R.id.addressId);
         backspace.setOnClickListener(new View.OnClickListener() {
@@ -164,8 +163,6 @@ public class FilterActivity extends AppCompatActivity implements FilterDataTrans
                 category_tv.setTextColor(Color.WHITE);
                 brand_tv.setTextColor(Color.BLACK);
                 price_tv.setTextColor(Color.BLACK);
-
-                //categoryApiCall();
             }
         });
 
@@ -181,7 +178,6 @@ public class FilterActivity extends AppCompatActivity implements FilterDataTrans
                 category_tv.setTextColor(Color.BLACK);
                 brand_tv.setTextColor(Color.WHITE);
                 price_tv.setTextColor(Color.BLACK);
-                //brandsApiCall();
             }
         });
 
@@ -200,12 +196,19 @@ public class FilterActivity extends AppCompatActivity implements FilterDataTrans
             }
         });
 
-      /*  unselect_all_tv.setOnClickListener(new View.OnClickListener() {
+        high_to_low_cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View v) {
-                setCategoryRecyclerView();
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                value_1 = 1;
             }
-        });*/
+        });
+
+        low_to_high_cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                value_0 = 0;
+            }
+        });
 
     }
 
@@ -355,18 +358,111 @@ public class FilterActivity extends AppCompatActivity implements FilterDataTrans
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    private void productApi(String store_id, final Integer category_id, final Integer brand_id, final int value) {
+        final List<ProductModel> storeList_1 = new ArrayList<>();
+        progressBar.setVisibility(View.VISIBLE);
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        String url = "https://missionlockdown.com/BoozeApp/api/products?store_id=" + store_id;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
 
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+
+
+                    Log.d("response", response);
+                    if (jsonObject.getString("success").equalsIgnoreCase("true")) {
+                        JSONArray jsonArray = jsonObject.getJSONArray("products");
+                        for (int j = 0; j < jsonArray.length(); j++) {
+
+                            JSONObject object = jsonArray.getJSONObject(j);
+                            HashMap<String, String> params = new HashMap<>();
+                            params.put("id", object.getString("id"));
+                            params.put("state_id", object.getString("state_id"));
+                            params.put("name", object.getString("name"));
+                            params.put("price", object.getString("price"));
+                            params.put("image", object.getString("image"));
+                            params.put("quantity", object.getString("quantity"));
+
+
+                            storeList_1.add(new ProductModel(params));
+
+                        }
+
+                        productsActivity.setProductRecylerView(storeList_1);
+
+                    } else {
+                        Toast.makeText(FilterActivity.this, "Something went wrong!", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                progressBar.setVisibility(View.GONE);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }) {
+
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                // Basic Authentication
+                //String auth = "Basic " + Base64.encodeToString(CONSUMER_KEY_AND_SECRET.getBytes(), Base64.NO_WRAP);
+
+                headers.put("Authorization", "Bearer " + token);
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("category_id",String.valueOf(category_id));
+                params.put("brand_id",String.valueOf(brand_id));
+                if (value == 1){
+                    params.put("price_max",String.valueOf(value));
+                } else {
+                    params.put("price_min",String.valueOf(value));
+                }
+
+                return params;
+            }
+        };
+
+        requestQueue.add(stringRequest);
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                50000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+
+    private Integer getCategoryId(int category_id){
+        return category_id;
+    }
+
+    private Integer getBrandId(int brand_id){
+        return brand_id;
     }
 
     @Override
     public void getFilterData(Integer[] categoryId, Integer[] brandId) {
-        for (Integer id : categoryId){
-            Toast.makeText(this,"Id: " + id, Toast.LENGTH_SHORT).show();
+        if (categoryId.length > 0){
+            for (int i = 0; i < categoryId.length; i++){
+                getCategoryId(categoryId[i]);
+                productApi(store_id,categoryId[i],0,0);
+            }
         }
 
+        if (brandId.length > 0){
+            for (int j = 0; j < brandId.length; j++){
+                getBrandId(brandId[j]);
+                productApi(store_id,0,brandId[j],0);
+            }
+        }
     }
 
     public static class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.ViewHolder> {
@@ -415,12 +511,8 @@ public class FilterActivity extends AppCompatActivity implements FilterDataTrans
                                 Integer[] categoryId = new Integer[list.size()];
                                 for (int i = 0; i < list.size(); i++){
                                     categoryId[i] = id;
-                                    ((FilterDataTransterListener)context).getFilterData(new Integer[]{categoryId[i]},null);
+                                    ((FilterDataTransterListener)context).getFilterData(categoryId,null);
                                 }
-
-
-
-
 
                             } else if (!checkBox.isChecked()) {
                                 checkedlist.remove(list.get(position));
@@ -450,9 +542,9 @@ public class FilterActivity extends AppCompatActivity implements FilterDataTrans
                                 int id = Integer.parseInt(item.getId());
 
                                 Integer[] brandId = new Integer[list.size()];
-                                for (int i = 0; i < list.size(); i++){
+                                for (int i = 0; i < brandId.length; i++){
                                     brandId[i] = id;
-                                    ((FilterDataTransterListener)context).getFilterData(null,new Integer[]{brandId[i]});
+                                    ((FilterDataTransterListener)context).getFilterData(null,brandId);
                                 }
                             } else if (!checkBox.isChecked()) {
                                 checkedlist.remove(list.get(position));
@@ -462,26 +554,6 @@ public class FilterActivity extends AppCompatActivity implements FilterDataTrans
                     });
                 }
             }
-//            holder.checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                @Override
-//                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                    if (isChecked == true){
-//                        Toast.makeText(context, category_id + " "+ holder.checkbox.getText().toString(),
-//                                Toast.LENGTH_SHORT).show();
-//                        //checkedlist.add(list.get(position));
-//                    } else {
-//                        //checkedlist.remove(list.get(position));
-//                        holder.checkbox.setChecked(false);
-//                    }
-//                }
-//            });
-
-//            if (item != null) {
-//
-//
-//            } else {
-//                return;
-//            }
         }
 
         @Override

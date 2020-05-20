@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -58,14 +57,13 @@ public class MainActivity extends AppCompatActivity {
     GPSTracker gps;
     double latitude;
     double longitude;
-    ImageView profile, search,cart;
+    ImageView profile, search, cart;
     Handler handlers;
     RecyclerView recyclerView;
     ProgressBar progressBar;
     LinearLayoutManager layoutManager;
     ArrayList<HashMap<String, String>> storeList = new ArrayList<>();
     String token;
-
 
 
     @Override
@@ -78,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
         search = findViewById(R.id.searchView);
         recyclerView = findViewById(R.id.recyclerview);
         progressBar = findViewById(R.id.progressbar);
-cart=findViewById(R.id.cart);
-        token = SharedHelper.getKey(this,"token");
+        cart = findViewById(R.id.cart);
+        token = SharedHelper.getKey(this, "token");
 
         gpsmethod();
         handlers = new Handler();
@@ -258,7 +256,7 @@ cart=findViewById(R.id.cart);
             holder.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getApplicationContext(), ListActivity .class);
+                    Intent intent = new Intent(getApplicationContext(), ListActivity.class);
                     intent.putExtra("ID", map.get("id"));
                     startActivity(intent);
                 }
