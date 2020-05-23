@@ -102,7 +102,7 @@ public class ProductsActivity extends AppCompatActivity implements DataTransferL
             @Override
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
-                bundle.putString("ID",store_id);
+                bundle.putString("Id",store_id);
                 Intent intent = new Intent(getApplicationContext(), FilterActivity.class);
                 if (bundle != null){
                     intent.putExtras(bundle);
@@ -139,10 +139,10 @@ public class ProductsActivity extends AppCompatActivity implements DataTransferL
 
         layoutManager = new LinearLayoutManager(getApplicationContext());
 
-        api();
+        productApi();
     }
 
-    private void api() {
+    private void productApi() {
         progressBar.setVisibility(View.VISIBLE);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         String url = "https://missionlockdown.com/BoozeApp/api/products?store_id=" + store_id;
@@ -209,7 +209,7 @@ public class ProductsActivity extends AppCompatActivity implements DataTransferL
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
-    private void setProductRecylerView(List<ProductModel> list) {
+    public void setProductRecylerView(List<ProductModel> list) {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
