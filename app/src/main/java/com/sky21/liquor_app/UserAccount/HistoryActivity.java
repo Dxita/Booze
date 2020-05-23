@@ -12,9 +12,11 @@ import com.google.android.material.tabs.TabLayout;
 import com.sky21.liquor_app.CartActivity;
 import com.sky21.liquor_app.Home.SearchActivity;
 import com.sky21.liquor_app.R;
+import com.sky21.liquor_app.SharedHelper;
 
 public class HistoryActivity extends AppCompatActivity {
     ImageView profile,search, cart;
+    String store_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +25,12 @@ public class HistoryActivity extends AppCompatActivity {
         profile=findViewById(R.id.myprofileId);
         search=findViewById(R.id.searchView);
         cart=findViewById(R.id.cart);
+
+        final Intent intent=getIntent();
+        store_id=intent.getStringExtra("STRID");
+        SharedHelper.putKey(HistoryActivity.this,"strid","strid");
+
+
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

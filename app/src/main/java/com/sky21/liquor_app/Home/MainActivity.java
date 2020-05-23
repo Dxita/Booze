@@ -125,7 +125,7 @@ cart=findViewById(R.id.cart);
     private void api() {
         progressBar.setVisibility(View.VISIBLE);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "https://missionlockdown.com/BoozeApp/api/stores";
+        String url = "https://boozeapp.co/Booze-App-Api/api/stores";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

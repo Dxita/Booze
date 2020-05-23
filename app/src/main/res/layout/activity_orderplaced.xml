@@ -72,26 +72,38 @@
             android:layout_height="wrap_content"></TextView>
 
         <TextView
+            android:id="@+id/orderid"
             android:layout_marginTop="20sp"
             android:fontFamily="@font/calibri"
             android:padding="10sp"
-            android:text="Order ID"
             android:textStyle="bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></TextView>
 
         <TextView
+            android:id="@+id/storename"
+            android:textColor="@color/black"
+            android:padding="05sp"
+            android:paddingLeft="10sp"
             android:fontFamily="@font/calibri"
-            android:padding="10sp"
-            android:text="Store Name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></TextView>
 
 
         <TextView
+            android:id="@+id/storeaddress"
             android:fontFamily="@font/calibri"
-            android:padding="10sp"
-            android:text="Store Name"
+            android:textColor="@color/black"
+            android:padding="05sp"
+            android:paddingLeft="10sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></TextView>
+        <TextView
+            android:id="@+id/time"
+            android:fontFamily="@font/calibri"
+            android:textColor="@color/black"
+            android:padding="05sp"
+            android:paddingLeft="10sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"></TextView>
 
@@ -159,7 +171,7 @@
 
     <Button
         android:id="@+id/continue_button"
-        android:text="Continue"
+        android:text="Check order status"
         android:textColor="@color/white"
         android:background="@color/golden"
         android:layout_alignParentBottom="true"

@@ -83,7 +83,7 @@ token=SharedHelper.getKey(ProfileActivity.this,"token");
 
     private void logout_api() {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "https://missionlockdown.com/BoozeApp/api/logout";
+        String url = "https://boozeapp.co/Booze-App-Api/api/logout";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

@@ -105,7 +105,7 @@ public class EditProfileActivity extends AppCompatActivity {
     private void editapi() {
         progressBar.setVisibility(View.VISIBLE);
         RequestQueue requestQueue= Volley.newRequestQueue(this);
-        String url="https://missionlockdown.com/BoozeApp/api/update-profile";
+        String url="https://boozeapp.co/Booze-App-Api/api/update-profile";
         StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

@@ -150,20 +150,48 @@
 
                         </LinearLayout>
 
-                        <Button
-                            android:id="@+id/add"
-                            android:textStyle="bold"
-                            android:fontFamily="@font/calibri"
-                            android:layout_marginRight="10dp"
-                            android:padding="2dp"
-                            android:layout_marginTop="0dp"
-                            android:layout_marginBottom="2dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="38dp"
-                            android:backgroundTint="@color/golden"
-                            android:text="add"
-                            android:textSize="11dp"
-                            android:textColor="@color/white"/>
+
+                        <RelativeLayout
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content">
+
+                            <Button
+                                android:visibility="gone"
+                                android:layout_alignParentRight="true"
+                                android:id="@+id/added"
+                                android:textStyle="bold"
+                                android:fontFamily="@font/calibri"
+                                android:layout_marginRight="10dp"
+                                android:padding="2dp"
+                                android:layout_marginTop="0dp"
+                                android:layout_marginBottom="2dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="38dp"
+                                android:backgroundTint="@color/green"
+                                android:text="Added"
+                                android:textSize="11dp"
+                                android:textColor="@color/white"/>
+                            <Button
+                                android:layout_alignParentRight="true"
+                                android:id="@+id/add"
+                                android:textStyle="bold"
+                                android:fontFamily="@font/calibri"
+                                android:layout_marginRight="10dp"
+                                android:padding="2dp"
+                                android:layout_marginTop="0dp"
+                                android:layout_marginBottom="2dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="38dp"
+                                android:backgroundTint="@color/golden"
+                                android:text="add"
+                                android:textSize="11dp"
+                                android:textColor="@color/white"/>
+                        </RelativeLayout>
+
+
+
+
 
 
 

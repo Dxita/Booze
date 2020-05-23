@@ -27,6 +27,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.sky21.liquor_app.Home.FilterActivity;
 import com.sky21.liquor_app.Home.ProductsActivity;
 import com.sky21.liquor_app.Home.SearchActivity;
@@ -119,13 +120,14 @@ public class ListActivity extends AppCompatActivity {
     private void api() {
         progressBar.setVisibility(View.VISIBLE);
         RequestQueue requestQueue= Volley.newRequestQueue(this);
-        String url="https://missionlockdown.com/BoozeApp/api/products?store_id="+store_id;
+        String url="https://boozeapp.co/Booze-App-Api/api/products?store_id="+store_id;
         StringRequest stringRequest=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
 
               /*  if(!(arrayList == null))
                     arrayList.clear();*/
+              Log.d("ressss",response);
                 try {
                     JSONObject jsonObject=new JSONObject(response);
                     if (jsonObject.getString("success").equalsIgnoreCase("true"))
@@ -142,7 +144,7 @@ public class ListActivity extends AppCompatActivity {
                                 SharedHelper.putKey(ListActivity.this,"product_id",object.getString("id"));
                                 map.put("name",object.getString("name"));
                                 map.put("price",object.getString("price"));
-                                map.put("quantity",object.getString("quantity"));
+                                map.put("size",object.getString("size"));
                                 map.put("image",object.getString("image"));
                                 map.put("brand_id",object.getString("brand_id"));
 
@@ -217,6 +219,7 @@ public class ListActivity extends AppCompatActivity {
 
             holder.name.setText(map.get("name"));
             holder.price.setText(getString(R.string.rupee)+map.get("price"));
+            Glide.with(context).load(map.get("image")).into(holder.product_img);
 
             holder.plus.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -224,6 +227,8 @@ public class ListActivity extends AppCompatActivity {
                     int quantity = (Integer.parseInt(holder.quantity.getText().toString()));
                     quantity = quantity + 1;
                     holder.quantity.setText(String.valueOf(quantity));
+                    holder.added.setVisibility(View.GONE);
+                    holder.button.setVisibility(View.VISIBLE);
                 }
             });
 
@@ -231,11 +236,13 @@ public class ListActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    if (Integer.parseInt(holder.quantity.getText().toString())>0)
+                    if (Integer.parseInt(holder.quantity.getText().toString())>1)
                     {
                         int quantity = (Integer.parseInt(holder.quantity.getText().toString()));
                         quantity = quantity - 1;
                         holder.quantity.setText(String.valueOf(quantity));
+                      holder.added.setVisibility(View.GONE);
+                        holder.button.setVisibility(View.VISIBLE);
                     }
                     else
                     {}
@@ -249,9 +256,15 @@ public class ListActivity extends AppCompatActivity {
 
                     int a = Integer.parseInt(String.valueOf(holder.quantity.getText().toString()));
                     int b = Integer.parseInt(String.valueOf(map.get("price")));
+                    Log.d("mapppp", String.valueOf(a));
                     String cost = String.valueOf(a * b);
 
-                    add_to_carts(map.get("id"), String.valueOf(b),cost);
+                    add_to_carts(map.get("id"), String.valueOf(a),cost);
+
+                holder.added.setVisibility(View.VISIBLE);
+                    holder.button.setVisibility(View.GONE);
+
+
                 }
             });
         }
@@ -264,10 +277,10 @@ public class ListActivity extends AppCompatActivity {
         }
     }
 
-    private void add_to_carts(final String id, final String s, final String cost) {
+    private void add_to_carts(final String id, final String a, final String cost) {
 
       progressBar.setVisibility(View.VISIBLE);
-        String url="https://missionlockdown.com/BoozeApp/api/add-to-cart";
+        String url="https://boozeapp.co/Booze-App-Api/api/add-to-cart";
         StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response){
@@ -275,6 +288,8 @@ public class ListActivity extends AppCompatActivity {
                     JSONObject json=new JSONObject(response);
                     if (json.getString("success").equalsIgnoreCase("true"))
                     {
+
+
                         Toast.makeText(ListActivity.this, "Added To Cart !", Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
@@ -304,8 +319,10 @@ public class ListActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> map = new HashMap<String,String>();
                 map.put("product_id",id);
-                map.put("quantity",s);
+                map.put("quantity",a);
                 map.put("cost",cost);
+                map.put("store_id",store_id);
+
                 Log.d("mAKKK", String.valueOf(map));
                 return map;
             }
@@ -322,8 +339,8 @@ public class ListActivity extends AppCompatActivity {
 
     private class MyHolder extends RecyclerView.ViewHolder {
         TextView name,price,quantity;
-        Button button;
-        ImageView plus, minus;
+        Button button,added;
+        ImageView plus, minus, product_img;
         public MyHolder(View view) {
             super(view);
 
@@ -333,6 +350,8 @@ public class ListActivity extends AppCompatActivity {
             button=view.findViewById(R.id.add);
             plus=view.findViewById(R.id.plus);
             minus=view.findViewById(R.id.minus);
+            added=view.findViewById(R.id.added);
+            product_img=view.findViewById(R.id.productImageId);
         }
     }
 }

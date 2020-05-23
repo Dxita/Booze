@@ -35,9 +35,9 @@
 
 
         <ImageView
+            android:visibility="visible"
             android:id="@+id/searchView"
-            android:src="@drawable/ic_search_black_24dp"
-            android:tint="@color/black"
+            android:src="@drawable/search"
             android:layout_gravity="center_vertical"
             android:layout_width="25dp"
             android:layout_height="25dp"
@@ -45,7 +45,7 @@
 
         <ImageView
             android:id="@+id/myprofileId"
-            android:src="@drawable/ic_account_circle_black_24dp"
+            android:src="@drawable/account"
             android:layout_gravity="center_vertical"
             android:layout_width="25dp"
             android:layout_height="25dp"
@@ -54,7 +54,7 @@
 
         <ImageView
             android:id="@+id/cart"
-            android:src="@drawable/ic_shopping_cart_black_24dp"
+            android:src="@drawable/cart"
             android:layout_gravity="center_vertical"
             android:layout_width="25dp"
             android:layout_height="25dp"

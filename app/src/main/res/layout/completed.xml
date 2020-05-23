@@ -72,6 +72,7 @@
                             android:textSize="15dp"/>
 
                         <TextView
+                            android:id="@+id/id"
                             android:visibility="visible"
                             android:text="RS.180"
                             android:layout_marginTop="03sp"                            android:fontFamily="@font/calibri"
@@ -83,9 +84,11 @@
                             android:textSize="13dp"/>
 
                         <TextView
+                            android:id="@+id/p"
                             android:visibility="visible"
-                            android:text="3 bottles"
-                            android:layout_marginTop="03sp"                            android:fontFamily="@font/calibri"
+                            android:text="RS.180"
+                            android:layout_marginTop="03sp"
+                            android:fontFamily="@font/calibri"
                             android:textColor="@color/black"
                             android:paddingLeft="10dp"
                             android:layout_width="wrap_content"
@@ -94,6 +97,20 @@
                             android:textSize="13dp"/>
 
                         <TextView
+                            android:id="@+id/q"
+                            android:visibility="visible"
+                            android:text="3 bottles"
+                            android:layout_marginTop="03sp"
+                            android:fontFamily="@font/calibri"
+                            android:textColor="@color/black"
+                            android:paddingLeft="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="normal"
+                            android:textSize="13dp"/>
+
+                        <TextView
+                            android:id="@+id/cost"
                             android:visibility="visible"
                             android:text="Total cost: Rs.540"
                             android:layout_marginTop="03sp"                            android:fontFamily="@font/calibri"
@@ -105,6 +122,7 @@
                             android:textSize="13dp"/>
 
                         <TextView
+                            android:id="@+id/date"
                             android:visibility="visible"
                             android:text="Ordered on : 18/05/2020"
                             android:layout_marginTop="03sp"                            android:fontFamily="@font/calibri"

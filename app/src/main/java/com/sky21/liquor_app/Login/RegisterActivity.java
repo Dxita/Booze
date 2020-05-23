@@ -96,7 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void api() {
         progressBar.setVisibility(View.VISIBLE);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "https://missionlockdown.com/BoozeApp/api/register";
+        String url="https://boozeapp.co/Booze-App-Api/api/register";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

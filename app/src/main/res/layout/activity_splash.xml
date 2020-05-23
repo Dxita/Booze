@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:background="@color/colorPrimary"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,9 +10,9 @@
 
     <ImageView
         android:layout_centerInParent="true"
-        android:src="@mipmap/theka"
-        android:layout_width="130dp"
-        android:layout_height="130sp"></ImageView>
+        android:src="@drawable/newlogo"
+        android:layout_width="140dp"
+        android:layout_height="140sp"></ImageView>
 
 
 </RelativeLayout>
