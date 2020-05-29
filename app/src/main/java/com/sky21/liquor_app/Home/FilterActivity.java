@@ -239,7 +239,7 @@ public class FilterActivity extends AppCompatActivity implements FilterDataTrans
         progressBar.setVisibility(View.VISIBLE);
         categorylist = new ArrayList<>();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "https://missionlockdown.com/BoozeApp/api/categories";
+        String url = "http://boozeapp.co/Booze-App-Api/api/categories";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -302,7 +302,7 @@ public class FilterActivity extends AppCompatActivity implements FilterDataTrans
         progressBar.setVisibility(View.VISIBLE);
         brandlist = new ArrayList<>();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "https://missionlockdown.com/BoozeApp/api/brands";
+        String url = "http://boozeapp.co/Booze-App-Api/api/brands";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -364,7 +364,7 @@ public class FilterActivity extends AppCompatActivity implements FilterDataTrans
         final List<ProductModel> storeList_1 = new ArrayList<>();
         progressBar.setVisibility(View.VISIBLE);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "https://missionlockdown.com/BoozeApp/api/products?store_id=" + store_id;
+        String url = "http://boozeapp.co/Booze-App-Api/api/products?store_id=" + store_id;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

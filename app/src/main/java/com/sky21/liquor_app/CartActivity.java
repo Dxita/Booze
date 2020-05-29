@@ -29,14 +29,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.bumptech.glide.Glide;
 import com.sky21.liquor_app.Home.ProductsActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -49,15 +47,11 @@ public class CartActivity extends AppCompatActivity {
     ProgressBar progressBar;
     LinearLayoutManager layoutManager;
     ArrayList<HashMap<String, String>> storeList = new ArrayList<>();
-    HashMap<String,String>data=new HashMap<>();
-
     Button place_order;
     String cart_total;
     ImageView empty_cart;
     String total_cost;
      String time ;
-     TextView time_text;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,14 +118,10 @@ public class CartActivity extends AppCompatActivity {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
                 // display a toast with changed values of time picker
-
-
-                 time= String.valueOf(hourOfDay)+":"+String.valueOf(minute);
-                Log.d("FFF",time);
-               // Toast.makeText(getApplicationContext(), hourOfDay + "  " + minute, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), hourOfDay + "  " + minute, Toast.LENGTH_SHORT).show();
             time_text.setText(hourOfDay + " : " + minute);// set the current time in text view
 
-
+                time= time_text.getText().toString();
 
 
             }
@@ -155,7 +145,7 @@ public class CartActivity extends AppCompatActivity {
     private void orderplace() {
         progressBar.setVisibility(View.VISIBLE);
         RequestQueue requestQueue=Volley.newRequestQueue(this);
-        String url="https://boozeapp.co/Booze-App-Api/api/place-order";
+        String url="https://missionlockdown.com/BoozeApp/api/place-order";
         StringRequest stringRequest=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -163,58 +153,22 @@ public class CartActivity extends AppCompatActivity {
                 Log.d("vvvvvvvvvvvvvvvv",response);
                 try {
                     JSONObject jsonObject=new JSONObject(response);
-
-
-
                     if (jsonObject.getString("success").equalsIgnoreCase("true"))
                     {
-
-
-
-
                         JSONArray jsonArray=jsonObject.getJSONArray("data");
                         for (int i=0; i<jsonArray.length(); i++)
                         {
                             JSONObject object=jsonArray.getJSONObject(i);
                             HashMap<String,String>map=new HashMap<>();
-                            data.put("order_id", object.getString("order_id"));
-                            //data.put("total",object.getString("total"));
-                            data.put("pick_up_time",object.getString("pick_up_time"));
-                            //total_cost=map.get("total");
-
-
-                            JSONObject jsonObject1=object.getJSONObject("store");
-                            {
-
-                                data.put("id",jsonObject1.getString("id"));
-                                data.put("name",jsonObject1.getString("name"));
-                                data.put("address",jsonObject1.getString("address"));
-                                data.put("license_number",jsonObject1.getString("license_number"));
-                                data.put("license_valid_till",jsonObject1.getString("license_valid_till"));
-                                data.put("lat",jsonObject1.getString("lat"));
-                                data.put("long",jsonObject1.getString("long"));
-
-
-
-                            }
+                            map.put("order_id", object.getString("order_id"));
+                            map.put("total_cost",object.getString("total_cost"));
+                            total_cost=map.get("total_cost");
 
                         }
 
                         Intent intent=new Intent(getApplicationContext(),OrderplacedActivity.class);
-                        intent.putExtra("STOREID",data.get("id"));
-                        intent.putExtra("orderid",data.get("order_id"));
-                        intent.putExtra("COST",cart_total );
-                        intent.putExtra("time",data.get("pick_up_time"));
-                        intent.putExtra("name",data.get("name"));
-                        intent.putExtra("add",data.get("address"));
-                        intent.putExtra("license_number",data.get("license_number"));
-                        intent.putExtra("license_valid_till",data.get("license_valid_till"));
-
-
-                        // intent.putExtra("TIME", time_text);
+                        intent.putExtra("COST",total_cost);
                         startActivity(intent);
-
-
                     }
                     else
                     {
@@ -248,9 +202,10 @@ public class CartActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String>map=new HashMap<>();
-                map.put("pick_up_time", time);
+                map.put("pick_up_time", "10.30");
                 map.put("store_id",SharedHelper.getKey(CartActivity.this,"store_id"));
-                Log.d("time",String.valueOf(map));
+                
+                Log.d("time", String.valueOf(map));
                 return map;
             }
         };
@@ -264,7 +219,7 @@ public class CartActivity extends AppCompatActivity {
     private void delete() {
 
         progressBar.setVisibility(View.VISIBLE);
-        String url ="https://boozeapp.co/Booze-App-Api/api/empty-cart";
+        String url ="https://missionlockdown.com/BoozeApp/api/empty-cart";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -320,7 +275,7 @@ public class CartActivity extends AppCompatActivity {
     private void getCartdata() {
         progressBar.setVisibility(View.VISIBLE);
         RequestQueue requestQueue= Volley.newRequestQueue(this);
-        String url="https://boozeapp.co/Booze-App-Api/api/cart";
+        String url="https://missionlockdown.com/BoozeApp/api/cart";
         StringRequest stringRequest=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -333,13 +288,6 @@ public class CartActivity extends AppCompatActivity {
 
                         cart_total=jsonObject.getString("total");
                         JSONArray jsonArray=jsonObject.getJSONArray("data");
-
-                        if (cart_total.equals("0"))
-                        {
-                            delete_all.setVisibility(View.GONE);
-                            empty_cart.setVisibility(View.VISIBLE);
-
-                        }
                         for(int j=0; j<jsonArray.length(); j++)
                         {
 
@@ -360,13 +308,10 @@ public class CartActivity extends AppCompatActivity {
 
 
                             storeList.add(params);
-                            delete_all.setVisibility(View.VISIBLE);
-                            place_order.setVisibility(View.VISIBLE);
 
                         }
 
-
-
+                        delete_all.setVisibility(View.VISIBLE);
                         CartAdapter cartadapter=new CartAdapter(getApplicationContext(),storeList);
                         recyclerView.setAdapter(cartadapter);
                     }
@@ -434,7 +379,6 @@ public class CartActivity extends AppCompatActivity {
             holder.name.setText(map.get("name"));
             holder.price.setText(getString(R.string.rupee)+map.get("price"));
             holder.quantity.setText(map.get("quantity"));
-            Glide.with(context).load(map.get("image")).into(holder.cart_img);
 //            holder.cost.setText("Total cost:"+" "+getString(R.string.rupee)+map.get("cost"));
             holder.delete_item.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -559,7 +503,7 @@ public class CartActivity extends AppCompatActivity {
 
     private class CartHolder extends RecyclerView.ViewHolder {
         TextView name, price, cost, quantity;
-        ImageView delete_item,plus,minus,cart_img;
+        ImageView delete_item,plus,minus;
 
         public CartHolder(@NonNull View itemView) {
             super(itemView);
@@ -569,7 +513,6 @@ public class CartActivity extends AppCompatActivity {
             delete_item=itemView.findViewById(R.id.delete_item);
             plus=itemView.findViewById(R.id.plus);
             minus=itemView.findViewById(R.id.minus);
-            cart_img=itemView.findViewById(R.id.cartImg);
         }
     }
 
@@ -615,6 +558,7 @@ public class CartActivity extends AppCompatActivity {
                 map.put("product_id",s);
                 map.put("quantity", String.valueOf(id));
                 map.put("cost",toString);
+
                 Log.d("map", String.valueOf(map));
                 return map;
             }

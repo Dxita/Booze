@@ -142,10 +142,16 @@ public class ProductsActivity extends AppCompatActivity implements DataTransferL
         productApi();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        productApi();
+    }
+
     private void productApi() {
         progressBar.setVisibility(View.VISIBLE);
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        String url = "https://missionlockdown.com/BoozeApp/api/products?store_id=" + store_id;
+        String url = "http://boozeapp.co/Booze-App-Api/api/products?store_id=" + store_id;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -240,7 +246,7 @@ public class ProductsActivity extends AppCompatActivity implements DataTransferL
     private void add_to_cart(final String s, final int id, final String toString) {
 
         progressBar.setVisibility(View.VISIBLE);
-        String url = "https://missionlockdown.com/BoozeApp/api/add-to-cart";
+        String url = "http://boozeapp.co/Booze-App-Api/api/add-to-cart";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -292,7 +298,6 @@ public class ProductsActivity extends AppCompatActivity implements DataTransferL
     }
 
 
-
     //------------------------------------- Adapter -------------------------------------------
     public class Mainadapter extends RecyclerView.Adapter<MyHolder> {
         Context context;
@@ -328,12 +333,7 @@ public class ProductsActivity extends AppCompatActivity implements DataTransferL
                       cart_bottom_sheet_ll.setVisibility(View.VISIBLE);
                         quantity = (Integer.parseInt(holder.counter.getText().toString()));
 
-
-
-
                         quantity = quantity + 1;
-
-
 
                         holder.counter.setText(String.valueOf(quantity));
                         total = Integer.parseInt(map.getMapList().get("price") )* quantity;
@@ -341,8 +341,6 @@ public class ProductsActivity extends AppCompatActivity implements DataTransferL
                         subTotal.put(key, total);
 
                         Log.d("total", "onBindViewHolder: " + total);
-
-
 
                         int a = Integer.parseInt(String.valueOf(holder.counter.getText().toString()));
                         int b = Integer.parseInt(String.valueOf(map.getMapList().get("price")));

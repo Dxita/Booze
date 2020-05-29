@@ -54,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         backspace = findViewById(R.id.backspace);
 
         phone.setText("8290638499");
-        password.setText("123456");
+        password.setText("1234567");
 
         backspace.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,7 +102,6 @@ public class LoginActivity extends AppCompatActivity {
 
                         String token;
                         token = object.getString("token");
-                        Log.d("tok",token);
 
                         Intent signup = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(signup);
