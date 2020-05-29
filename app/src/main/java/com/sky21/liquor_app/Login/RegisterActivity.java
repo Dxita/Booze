@@ -107,7 +107,7 @@ public class RegisterActivity extends AppCompatActivity {
                         String phonenumber = "+" + code + mobile.getText().toString();
                         SharedHelper.putKey(RegisterActivity.this,"number",phonenumber);
 
-                        Intent signup = new Intent(getApplicationContext(), OTPActivity.class);
+                        Intent signup = new Intent(getApplicationContext(), OTPActivity .class);
 
                         signup.putExtra("PHONE",phonenumber);
                         startActivity(signup);

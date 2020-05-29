@@ -33,6 +33,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.sky21.liquor_app.CartActivity;
 import com.sky21.liquor_app.GPSTracker;
 import com.sky21.liquor_app.ListActivity;
@@ -143,6 +144,7 @@ public class MainActivity extends AppCompatActivity {
                             params.put("lat", object.getString("lat"));
                             params.put("long", object.getString("long"));
                             params.put("address", object.getString("address"));
+                            params.put("image_url",object.getString("image_url"));
 
                             storeList.add(params);
 
@@ -254,6 +256,8 @@ public class MainActivity extends AppCompatActivity {
 
             holder.store_name.setText(map.get("name"));
             holder.address.setText(map.get("address"));
+            Glide.with(context).load(map.get("image_url")).into(holder.imageView);
+
             holder.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -275,6 +279,7 @@ public class MainActivity extends AppCompatActivity {
     private class MyViewHolder extends RecyclerView.ViewHolder {
         TextView store_name, address;
         LinearLayout layout;
+        ImageView imageView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -282,6 +287,7 @@ public class MainActivity extends AppCompatActivity {
             store_name = itemView.findViewById(R.id.store_name);
             layout = itemView.findViewById(R.id.layout);
             address = itemView.findViewById(R.id.typeTxt);
+            imageView=itemView.findViewById(R.id.image);
         }
     }
 }

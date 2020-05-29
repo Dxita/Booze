@@ -60,6 +60,11 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
+                            <LinearLayout
+                                android:layout_weight="1"
+                                android:orientation="vertical"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content">
                             <TextView
                                 android:id="@+id/store_name"
                                 android:drawablePadding="10sp"
@@ -73,19 +78,30 @@
                                 android:textStyle="bold"
                                 android:textSize="14dp"/>
 
+                                <TextView
+                                    android:drawablePadding="10sp"
+                                    android:drawableLeft="@drawable/ic_location_on_black_24dp"
+                                    android:padding="10sp"
+                                    android:fontFamily="@font/calibri"
+                                    android:text="store address"
+                                    android:id="@+id/typeTxt"
+                                    android:textColor="@color/colorAccent"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="12sp"/>
+
+
+                            </LinearLayout>
+                            <ImageView
+                                android:padding="08sp"
+                                android:id="@+id/image"
+                                android:layout_width="80sp"
+                                android:layout_height="80sp"></ImageView>
+
                         </LinearLayout>
 
-                        <TextView
-                            android:drawablePadding="10sp"
-                            android:drawableLeft="@drawable/ic_location_on_black_24dp"
-                            android:padding="10sp"
-                            android:fontFamily="@font/calibri"
-                            android:text="store address"
-                            android:id="@+id/typeTxt"
-                            android:textColor="@color/colorAccent"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="14dp"/>
+
+                        </LinearLayout>
 
 
 
@@ -94,7 +110,7 @@
 
 
 
-                    </LinearLayout>
+
 
                 </LinearLayout>
 

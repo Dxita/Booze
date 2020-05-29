@@ -1,19 +1,18 @@
-package com.sky21.liquor_app.Fragment;
-
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
+package com.sky21.liquor_app;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,58 +25,58 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.sky21.liquor_app.OrderDetailsActivity;
-import com.sky21.liquor_app.R;
-import com.sky21.liquor_app.SharedHelper;
+import com.bumptech.glide.Glide;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
-public class CompletedFragment extends Fragment {
-RecyclerView recyclerView;
+public class OrderDetailsActivity extends AppCompatActivity {
+    TextView addressTxt;
+    RecyclerView recyclerView;
     ProgressBar progressBar;
     LinearLayoutManager layoutManagers;
-    String id,total_cost,token;
     ArrayList<HashMap<String, String>> storeList = new ArrayList<>();
     HashMap<String,String>data=new HashMap<>();
-    TextView textView;
-    public CompletedFragment() {
-        // Required empty public constructor
-    }
-
+    String id,total_cost,token;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v= inflater.inflate(R.layout.fragment_completed, container, false);
-   token = SharedHelper.getKey(getActivity(), "token");
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_order_details);
+        getSupportActionBar().hide();
 
-   progressBar=v.findViewById(R.id.progressbar);
-   textView=v.findViewById(R.id.text);
-        id= SharedHelper.getKey(getActivity(),"strid");
-        recyclerView=v.findViewById(R.id.recyclerview);
-        layoutManagers = new LinearLayoutManager(getActivity());
+
+        addressTxt=findViewById(R.id.addressId);
+        recyclerView=findViewById(R.id.recyclerview);
+        progressBar=findViewById(R.id.progressbar);
+        addressTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        token = SharedHelper.getKey(OrderDetailsActivity.this, "token");
+        final Intent intent = getIntent();
+        id = intent.getStringExtra("IDS");
+
+        layoutManagers = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManagers);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-
         api();
-        return v;
+
     }
 
     private void api() {
         progressBar.setVisibility(View.VISIBLE);
-        RequestQueue requestQueue= Volley.newRequestQueue(getActivity());
+        RequestQueue requestQueue= Volley.newRequestQueue(this);
         String url="https://boozeapp.co/Booze-App-Api/api/orders-list?"+"store_id=1"+"&status=3";
         StringRequest stringRequest=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -92,11 +91,9 @@ RecyclerView recyclerView;
                         for (int i=0; i<jsonArray.length(); i++)
                         {
                             JSONObject object=jsonArray.getJSONObject(i);
-                           // HashMap<String,String>map=new HashMap<>();
+                            // HashMap<String,String>map=new HashMap<>();
                             data.put("order_id", object.getString("order_id"));
                             data.put("total_cost", object.getString("total_cost"));
-                            data.put("confirmed_date", object.getString("confirmed_date"));
-
 
                             total_cost=data.get("total_cost");
 
@@ -104,9 +101,9 @@ RecyclerView recyclerView;
                             for (int j=0; j<array.length(); j++)
                             {
                                 JSONObject obj=array.getJSONObject(j);
-                                HashMap<String,String>param=new HashMap<>();
+                                HashMap<String,String> param=new HashMap<>();
                                 param.put("id",obj.getString("id"));
-                              //  param.put("order_id",obj.getString("order_id"));
+                                //  param.put("order_id",obj.getString("order_id"));
                                 param.put("product_id",obj.getString("product_id"));
                                 param.put("quantity",obj.getString("quantity"));
                                 param.put("cost",obj.getString("cost"));
@@ -133,25 +130,20 @@ RecyclerView recyclerView;
                                 }
                                 storeList.add(param);
                             }
-                            //Toast.makeText(getActivity(), ""+response, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(OrderDetailsActivity.this, ""+response, Toast.LENGTH_SHORT).show();
 
-                            MyAdapter myadapter=new MyAdapter(getActivity(),storeList);
+                            MyAdapter myadapter=new MyAdapter(OrderDetailsActivity.this,storeList);
                             recyclerView.setAdapter(myadapter);
 
                         }
 
                     }
 
-                    else if (jsonObject.getString("success").equalsIgnoreCase("false"))
-                    {
-                        textView.setVisibility(View.VISIBLE);
-                        recyclerView.setVisibility(View.GONE);
-                    }
                     else
                     {
 
 
-                        Toast.makeText(getActivity(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OrderDetailsActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                     }
                     progressBar.setVisibility(View.GONE);
                 } catch (JSONException e) {
@@ -184,42 +176,33 @@ RecyclerView recyclerView;
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
-    private class MyAdapter extends RecyclerView.Adapter<Holder> {
+    private class MyAdapter extends RecyclerView.Adapter<Hold> {
 
         Context context;
-        ArrayList<HashMap<String, String>> storelist = new ArrayList<>();
 
-        public MyAdapter(Context context, ArrayList<HashMap<String, String>> storeList) {
-
+        ArrayList<HashMap<String, String>> storeList = new ArrayList<>();
+        public MyAdapter(OrderDetailsActivity context, ArrayList<HashMap<String, String>> storeList) {
             this.context=context;
-            this.storelist=storeList ;
+            this.storeList=storeList ;
         }
 
         @NonNull
         @Override
-        public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view= LayoutInflater.from(context).inflate(R.layout.history,null);
-            return new Holder(view);
+        public Hold onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view= LayoutInflater.from(context).inflate(R.layout.historydetails,null);
+            return new Hold(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull Holder holder, int position) {
-
+        public void onBindViewHolder(@NonNull Hold holder, int position) {
             final HashMap<String,String> param=storeList.get(position);
-             holder.order_id.setText("ORDER ID:"+" "+data.get("order_id"));
-            holder.cost.setText("Total Cost is:"+" "+getString(R.string.rupee)+total_cost);
-            holder.store_name.setText(param.get("s_name"));
-            holder.address.setText(param.get("address"));
-            holder.date.setText("Ordered on:"+" "+data.get("confirmed_date"));
-            holder.cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            holder.name.setText(param.get("name"));
+            holder.price.setText(getString(R.string.rupee)+param.get("price"));
+            holder.quantity.setText("Product QTY:"+" "+param.get("quantity"));
+            Glide.with(context).load(param.get("image")).into(holder.image);
 
-                    Intent intent=new Intent(getActivity(), OrderDetailsActivity.class);
-                    intent.putExtra("IDS",id);
-                    startActivity(intent);
-                }
-            });
+
+
 
         }
 
@@ -230,21 +213,16 @@ RecyclerView recyclerView;
         }
     }
 
-    private class Holder extends RecyclerView.ViewHolder {
-  TextView order_id, cost,store_name,address,date;
-  CardView cardView;
-        public Holder(View view) {
+    private class Hold extends RecyclerView.ViewHolder {
+        TextView name, price, quantity;
+        ImageView image;
+        public Hold(View view) {
             super(view);
 
-            order_id=view.findViewById(R.id.orderid);
-            cost=view.findViewById(R.id.cost);
-            date=view.findViewById(R.id.date);
-            cardView=view.findViewById(R.id.card);
-            store_name=view.findViewById(R.id.store_name);
-            address=view.findViewById(R.id.store_address);
-
-
-
+            name=view.findViewById(R.id.name);
+            price=view.findViewById(R.id.price);
+            quantity=view.findViewById(R.id.quantity);
+            image=view.findViewById(R.id.productImageId);
         }
     }
 }

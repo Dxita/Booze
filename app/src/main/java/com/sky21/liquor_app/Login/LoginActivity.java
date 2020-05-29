@@ -102,6 +102,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         String token;
                         token = object.getString("token");
+                        Log.d("tok",token);
 
                         Intent signup = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(signup);

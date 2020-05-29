@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:background="@color/white"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,6 +10,7 @@
     tools:context=".OTPActivity">
 
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/topview"
         android:orientation="horizontal"
         android:padding="20dp"
@@ -54,12 +56,19 @@
         </LinearLayout>
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/otp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/otp"
+        android:layout_width="350dp"
+        android:layout_height="300dp"></ImageView>
+
     <LinearLayout
         android:id="@+id/lay"
         android:layout_marginTop="40sp"
         android:layout_marginRight="14sp"
         android:layout_marginLeft="14sp"
-        android:layout_below="@+id/topview"
+        android:layout_below="@+id/otp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -97,7 +106,7 @@
         android:id="@+id/buttonSignIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="submit"
+        android:text="submit otp"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:background="@color/golden"

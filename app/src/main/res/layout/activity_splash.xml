@@ -9,10 +9,11 @@
     tools:context=".Login.SplashActivity">
 
     <ImageView
+        android:id="@+id/imageview"
         android:layout_centerInParent="true"
         android:src="@drawable/newlogo"
-        android:layout_width="140dp"
-        android:layout_height="140sp"></ImageView>
+        android:layout_width="220dp"
+        android:layout_height="220dp"></ImageView>
 
 
 </RelativeLayout>

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.sky21.liquor_app.CartActivity;
@@ -15,6 +16,8 @@ import com.sky21.liquor_app.R;
 import com.sky21.liquor_app.SharedHelper;
 
 public class HistoryActivity extends AppCompatActivity {
+    TextView addressTxt;
+
     ImageView profile,search, cart;
     String store_id;
     @Override
@@ -25,6 +28,13 @@ public class HistoryActivity extends AppCompatActivity {
         profile=findViewById(R.id.myprofileId);
         search=findViewById(R.id.searchView);
         cart=findViewById(R.id.cart);
+        addressTxt=findViewById(R.id.addressId);
+        addressTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         final Intent intent=getIntent();
         store_id=intent.getStringExtra("STRID");

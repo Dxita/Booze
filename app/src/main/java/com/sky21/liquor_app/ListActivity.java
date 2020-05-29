@@ -148,7 +148,6 @@ public class ListActivity extends AppCompatActivity {
                                 map.put("image",object.getString("image"));
                                 map.put("brand_id",object.getString("brand_id"));
 
-
                                 arrayList.add(map);
                             }
                         Mainadapter mainadapter=new Mainadapter(getApplicationContext(),arrayList);

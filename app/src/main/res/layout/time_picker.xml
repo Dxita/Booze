@@ -25,7 +25,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:background="@color/golden"
-        android:padding="20dp"
+        android:padding="10dp"
         android:backgroundTint="@color/colorPrimaryDark"
         android:timePickerMode="spinner" />
 
@@ -37,10 +37,24 @@
         android:layout_centerHorizontal="true"
         android:text="Please select your pickup time"
         android:padding="10sp"
+        android:layout_marginBottom="10sp"
         android:textSize="14sp"
         android:textStyle="bold" />
 
-
+<EditText
+    android:background="@drawable/stroke"
+    android:id="@+id/edtx"
+    android:gravity="left"
+    android:padding="10sp"
+    android:hint="Add your comment/note here.."
+    android:singleLine="true"
+    android:textSize="14sp"
+    android:fontFamily="@font/calibri"
+    android:layout_marginRight="15sp"
+    android:layout_marginLeft="15sp"
+    android:layout_below="@id/simpleTimePicker"
+    android:layout_width="match_parent"
+    android:layout_height="110sp"></EditText>
     <Button
         android:layout_marginBottom="10sp"
         android:layout_marginTop="20sp"
@@ -51,7 +65,7 @@
         android:text="Submit"
         android:layout_centerHorizontal="true"
         android:id="@+id/Submit"
-        android:layout_below="@+id/simpleTimePicker"
+        android:layout_below="@+id/edtx"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"></Button>
 </RelativeLayout>

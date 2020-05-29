@@ -333,6 +333,13 @@ public class CartActivity extends AppCompatActivity {
 
                         cart_total=jsonObject.getString("total");
                         JSONArray jsonArray=jsonObject.getJSONArray("data");
+
+                        if (cart_total.equals("0"))
+                        {
+                            delete_all.setVisibility(View.GONE);
+                            empty_cart.setVisibility(View.VISIBLE);
+
+                        }
                         for(int j=0; j<jsonArray.length(); j++)
                         {
 
@@ -353,10 +360,13 @@ public class CartActivity extends AppCompatActivity {
 
 
                             storeList.add(params);
+                            delete_all.setVisibility(View.VISIBLE);
+                            place_order.setVisibility(View.VISIBLE);
 
                         }
 
-                        delete_all.setVisibility(View.VISIBLE);
+
+
                         CartAdapter cartadapter=new CartAdapter(getApplicationContext(),storeList);
                         recyclerView.setAdapter(cartadapter);
                     }
